@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+.venv/
+.lake/
+# LaTeX build artefacts at the repo root only, so that recorded
+# evidence under verification/evidence is not swept up as well.
+/*.aux
+/*.log
+/*.out
+/*.toc
+.ruff_cache/

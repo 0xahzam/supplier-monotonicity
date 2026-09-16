@@ -1,0 +1,137 @@
+{
+  "configuration": {
+    "name": "USDT",
+    "optimal_utilization": 800000,
+    "optimal_borrow_rate": 52500,
+    "max_borrow_rate": 900000,
+    "min_borrow_rate": 1,
+    "carveout_factor": 50000,
+    "segments": [
+      [
+        850000,
+        50
+      ],
+      [
+        900000,
+        100
+      ],
+      [
+        950000,
+        150
+      ],
+      [
+        990000,
+        200
+      ],
+      [
+        995000,
+        250
+      ],
+      [
+        1000000,
+        250
+      ]
+    ]
+  },
+  "source_sha256": {
+    "config/market.json": "ea49b91dfc723470f13fe404b5d4dd824d33557f09f921877adf509e4290699b",
+    "src/supplier_monotonicity/curve.py": "900f4012018facf427b839a1e516ac0a9d6b242558ec27266133e7f7846c44e9"
+  },
+  "integer_rational_max_apr_error": 9.97500000265994e-07,
+  "checks": [
+    "Integer port compared with rational interpolation at all 1,000,001 utilization ticks; maximum APR difference 9.97500000266e-07.",
+    "All repairs pass exact segment-endpoint envelope checks; mixed solutions satisfy KKT certificates and beat floor/raise-only squared-error objectives; income derivatives agree with finite differences."
+  ],
+  "lifecycle": {
+    "market": {
+      "Baseline": {
+        "supplier_interest": 1982.6395196054361,
+        "difference": 0.0,
+        "pool_borrower_interest": 208698.89680057194
+      },
+      "Floor": {
+        "supplier_interest": 3164.596801013899,
+        "difference": 1181.957281408463,
+        "pool_borrower_interest": 333115.4527383044
+      },
+      "Raise only": {
+        "supplier_interest": 3164.596801013899,
+        "difference": 1181.957281408463,
+        "pool_borrower_interest": 333115.4527383044
+      },
+      "Mixed": {
+        "supplier_interest": 3164.596800925238,
+        "difference": 1181.9572813198017,
+        "pool_borrower_interest": 333115.45272897166
+      }
+    },
+    "topups": {
+      "Baseline": {
+        "supplier_interest": 13452.540238071126,
+        "difference": 0.0,
+        "pool_borrower_interest": 303950.53104705457
+      },
+      "Floor": {
+        "supplier_interest": 19667.418562795425,
+        "difference": 6214.878324724299,
+        "pool_borrower_interest": 450246.1545435981
+      },
+      "Raise only": {
+        "supplier_interest": 19667.418562795425,
+        "difference": 6214.878324724299,
+        "pool_borrower_interest": 450246.1545435981
+      },
+      "Mixed": {
+        "supplier_interest": 19667.418562250816,
+        "difference": 6214.87832417969,
+        "pool_borrower_interest": 450246.15453163214
+      }
+    },
+    "fresh_market": {
+      "Baseline": {
+        "supplier_interest": 1982.6395196054361,
+        "difference": 0.0,
+        "pool_borrower_interest": 208698.89680057194
+      },
+      "Floor": {
+        "supplier_interest": 1287.0025333321257,
+        "difference": -695.6369862733104,
+        "pool_borrower_interest": 135473.95087706583
+      },
+      "Raise only": {
+        "supplier_interest": 2231.0354823957837,
+        "difference": 248.39596279034754,
+        "pool_borrower_interest": 234845.84025218827
+      },
+      "Mixed": {
+        "supplier_interest": 1680.4077383295887,
+        "difference": -302.2317812758474,
+        "pool_borrower_interest": 176885.02508732516
+      }
+    }
+  },
+  "fee_assumption": {
+    "carveout": 0.05,
+    "additional_fees": 0
+  },
+  "feasibility": {
+    "fresh": {
+      "minimum_base_with_fixed_top": 0.03473323443654407,
+      "largest_top_without_raising_baseline": 0.1203865979381443,
+      "fixed_base_and_top_feasible": false,
+      "no_increase_fixed_top_feasible": false
+    },
+    "fixed": {
+      "minimum_base_with_fixed_top": 0.0,
+      "largest_top_without_raising_baseline": 0.5717852520176642,
+      "fixed_base_and_top_feasible": true,
+      "no_increase_fixed_top_feasible": false
+    },
+    "both": {
+      "minimum_base_with_fixed_top": 0.08678976683308944,
+      "largest_top_without_raising_baseline": 0.048178674534810874,
+      "fixed_base_and_top_feasible": false,
+      "no_increase_fixed_top_feasible": false
+    }
+  }
+}

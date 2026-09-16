@@ -1,0 +1,64 @@
+{
+  "failure": {
+    "before": 159774.99999999968,
+    "at_kink": 55000.00000000001
+  },
+  "single_path": {
+    "False": [
+      24437.499999999978,
+      52856.691919192024
+    ],
+    "True": [
+      13447.41369803197,
+      30710.61922066448
+    ]
+  },
+  "analytic": {
+    "power_lower": {
+      "base": 0.005,
+      "kink": 0.0525,
+      "top": 0.5764561691885035
+    },
+    "power_raise": {
+      "base": 0.005,
+      "kink": 0.0525,
+      "top": 0.9
+    },
+    "both_raise": {
+      "base": 0.01851008019913356,
+      "kink": 0.09255040099557524,
+      "top": 0.8999999999999999
+    }
+  },
+  "knot_sensitivity": {
+    "subsegments": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "fresh_min_base": [
+      0.03473323443654409,
+      0.01041328090869369,
+      0.0031279027885727,
+      0.0010426082789838382,
+      0.00039720052645517866,
+      0.00016898728109259972,
+      7.731684537769644e-05
+    ],
+    "both_min_base": [
+      0.08678976683308945,
+      0.0517287757445992,
+      0.034068672794805493,
+      0.02540446877221185,
+      0.021154797364309568,
+      0.019057268956642958,
+      0.018016295372670035
+    ],
+    "continuous_combined_min_base": 0.01698091211408883
+  },
+  "checks": "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-knot KKT and integer/rational checks also run."
+}
