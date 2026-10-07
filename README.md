@@ -1,6 +1,6 @@
 # Depositing More Should Not Earn Less
 
-Ahzam Khan and Cavey Cool, September 2026.
+Ahzam Khan and Cavey Cool, October 2026.
 
 Publication bundle: manuscript, figure sources and data,
 reproducible analysis, and a Lean verification library.
@@ -19,7 +19,7 @@ reproducible analysis, and a Lean verification library.
   author       = {Khan, Ahzam and Cool, Cavey},
   title        = {Depositing More Should Not Earn Less},
   year         = {2026},
-  month        = sep,
+  month        = oct,
   howpublished = {\url{https://github.com/0xahzam/supplier-monotonicity}}
 }
 ```

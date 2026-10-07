@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{paperstyle}
 \usepackage{graphicx}
+\usepackage{cite}
 \graphicspath{{../figures/}}
 
 \title{Depositing More Should Not Earn Less}
@@ -12,28 +13,32 @@ Ahzam Khan & Cavey Cool \\
 \small\href{mailto:ahzam.main@gmail.com}{ahzam.main@gmail.com} &
 \small\href{mailto:caveycool@gmail.com}{caveycool@gmail.com}
 \end{tabular}}
-\date{September 2026}
+\date{October 2026}
 \hypersetup{pdftitle={Depositing More Should Not Earn Less},pdfauthor={Ahzam Khan and Cavey Cool},pdfsubject={Supplier income monotonicity and rate curve design in pooled lending markets}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Utilization dependent interest rate models can create a counterintuitive supplier incentive: adding liquidity may reduce a supplier's total interest income even as the supplier's balance increases. A supplier holding a fraction $\alpha$ of final pool supply keeps income nondecreasing with a marginal deposit exactly when $\alpha(1+\eta)\leq1$, where $\eta$ is the elasticity of the borrow rate with respect to utilization. When the condition fails, the supplier can instead raise its income by withdrawing, which pushes utilization further up. A protocol turns this into a design constraint by choosing a protection profile $\bar\alpha(U)$, the largest supplier share it intends to protect. That choice induces an elasticity envelope $E(U)=(1-\bar\alpha(U))/\bar\alpha(U)$, and integrating the envelope describes every admissible curve. A flat target gives a constant ceiling and a power law boundary; protecting every fresh depositor gives the profile $1-U$ and a hyperbolic boundary. Neither guarantee implies the other, and imposing both takes the smaller of their envelopes. We give piecewise linear and analytic constructions and compare them on a multiple kink USDT market whose parameters are drawn from a deployed configuration. The constraint does not determine the level of interest income: a compliant floor can reduce earnings, while a repair that only raises rates preserves supplier income under the same market history at a cost to borrowers. Fixed knots introduce restrictions beyond the continuous endpoint bound. As an extension, requiring a continuous derivative makes the minimum worst case elasticity $K^*$ unattainable rather than merely minimal.
+Utilization dependent interest rate models can create a counterintuitive supplier incentive: adding liquidity may reduce a supplier's total interest income even as the supplier's balance increases. A supplier holding a fraction $\alpha$ of final pool supply keeps income nondecreasing with a marginal deposit exactly when $\alpha(1+\eta)\leq1$, where $\eta$ is the elasticity of the borrow rate with respect to utilization. When the condition fails, the supplier can instead raise its income by withdrawing, which pushes utilization further up. A protocol turns this into a design constraint by choosing a protection profile $\bar\alpha(U)$, the largest supplier share it intends to protect; integrating the induced elasticity envelope $E(U)=(1-\bar\alpha(U))/\bar\alpha(U)$ describes every admissible curve. A flat target gives a power law boundary, and protecting every fresh depositor gives a hyperbolic one. On a multiple kink USDT market whose parameters are drawn from a deployed configuration, the constraint does not determine the level of interest income: a compliant floor can reduce earnings, while a repair that only raises rates preserves them at a cost to borrowers. Requiring a continuous derivative makes the minimum worst case elasticity $K^*$ unattainable rather than merely minimal.
 \end{abstract}
 
 \section{Introduction}
 
-Pooled lending protocols commonly determine interest rates as a function of utilization. A standard design increases the borrow rate gradually below an optimal utilization level and much more aggressively above it. The steep branch improves incentives to restore liquidity under stress, but it also creates a supplier price impact problem: an additional deposit lowers utilization, which lowers the borrow rate, and the lower rate applies to the supplier's entire balance.
+Pooled lending protocols commonly determine interest rates as a function of utilization~\cite{compound,aave}. A standard design increases the borrow rate gradually below an optimal utilization level and much more aggressively above it. The steep branch improves incentives to restore liquidity under stress, but it also creates a supplier price impact problem: an additional deposit lowers utilization, which lowers the borrow rate, and the lower rate applies to the supplier's entire balance.
 
 Consequently, a supplier may be better off withholding capital, or withdrawing it. This is not hypothetical: on a lending market at high utilization, one of us found that the profitable action was to deposit less than the balance held, which is the state in which the pool can least afford it.
 
+Existing work on these curves treats lenders as a group or the pool as a whole: it compares the rate rules of deployed protocols~\cite{gudgeon}, models lending pools formally~\cite{bartoletti}, or designs rates that maximize expected lender wealth~\cite{baude-optimal} or keep utilization stable~\cite{agilerate}. Closest to the question here, Baude et al.~\cite{baude-leverage} account for the effect of a borrower's own position size on its borrowing cost. We study the corresponding question for a single supplier.
+
 The role of this paper is to give an exact condition under which this cannot happen, to describe the rate curves that satisfy it, and to separate what such a guarantee promises from what it costs. The rest of the paper proceeds as follows. In Section~\ref{sec:failure} we work the failure through in numbers. In Sections~\ref{sec:model}--\ref{sec:family} we derive the income condition and the admissible family of rate curves it induces. In Sections~\ref{sec:fixed} and \ref{sec:fresh} we develop two protection guarantees and show that both are instances of the same construction, and in Section~\ref{sec:minimal} we give a power law repair. In Sections~\ref{sec:multi} and \ref{sec:earnings} we take a market with several kinks and separate protection from pricing. Lastly, in Section~\ref{sec:onchain} we state the check a protocol would implement. Detailed constructions, sensitivity studies and the smooth extension are collected in the appendices.
+
+Most of the results are formalized in Lean~4. The Lean library, the analysis code and its data are available at \url{https://github.com/0xahzam/supplier-monotonicity}, with a record of which statements are covered.
 
 \section{The Failure Mode}
 \label{sec:failure}
 
-Consider a market with optimal utilization $O=80\%$, a borrow rate of $R_o=5\%$ at that point, and a maximum borrow rate of $R_{\max}=100\%$ at full utilization, connected by straight lines. This is a standard kinked curve; the jump above the kink is large but not unusual.
+Consider a market with optimal utilization $O=80\%$, a borrow rate of $R_o=5\%$ at that point, and a maximum borrow rate of $R_{\max}=100\%$ at full utilization, connected by straight lines. This is a standard kinked curve~\cite{aave}; the jump above the kink is large but not unusual.
 
 Let the market hold \$10 million of supply against \$8.3 million of borrowings, so utilization is $83\%$. The market is above its own optimal level, which is precisely the state in which the protocol wants more supply, and a supplier holding \$1 million of the pool provides it. That supplier earns about \$159{,}800 a year before the deposit, and after adding \$375{,}000, which is exactly enough to return the market to optimal utilization, earns about \$55{,}000. The balance has grown by $37.5\%$ and the income has fallen by $66\%$. Depositing past the kink recovers only part of the loss, and as Figure~\ref{fig:failure-mode} shows, the income never returns to where it started. The same supplier does better by going the other way: withdrawing about \$302{,}000 raises its income to about \$188{,}300, $18\%$ more on $30\%$ less capital, and moves utilization from $83\%$ to about $85.6\%$, further from the level the protocol is trying to restore.
 
@@ -82,7 +87,7 @@ Consider an infinitesimal increase $d\delta$ in the same supplier's deposit, hol
 =-\frac{B}{T^2}
 =-\frac{U}{T}
 \]
-and additional supply reduces utilization locally. A constant fraction $f<1$ withheld from borrower interest multiplies supplier income and its derivative by $1-f$, leaving the sign condition unchanged. A utilization dependent fee would need to be included in the derivative. Income here is an annualized flow at a state, not interest already earned over time.
+and additional supply reduces utilization locally. Borrowings respond to rates, but not within the transaction: a deposit settles against the current borrowings, and any borrowing that the lower rate attracts arrives later and offsets part of the loss. The condition describes that immediate effect, which is the one a supplier sees when deciding whether to deposit; how far borrowers respond afterwards is outside the claim, as in Section~\ref{sec:earnings}. A constant fraction $f<1$ withheld from borrower interest multiplies supplier income and its derivative by $1-f$, leaving the sign condition unchanged. A utilization dependent fee would need to be included in the derivative. Income here is an annualized flow at a state, not interest already earned over time.
 
 \section{Supplier Income Monotonicity}
 \label{sec:condition}
@@ -278,7 +283,7 @@ R_b(U)=R_b(U_a)\,\frac{1-U_a}{1-U}
 Substituting $\bar\alpha=1-U$ into $E=(1-\bar\alpha)/\bar\alpha$ gives $E=U/(1-U)$, and $\eta\leq E$ rearranges to $(1-u)R_b'\leq R_b$. Since $E(v)/v=1/(1-v)$, the integral in Theorem~\ref{thm:family} evaluates to $\ln\big((1-U_a)/(1-U)\big)$, which gives the stated boundary.
 \end{proof}
 
-Reading the profile directly is the quickest way to see what this guarantee is worth. It protects half the pool at $50\%$ utilization, a tenth of it at $90\%$, and only a hundredth at $99\%$. The permissiveness near full utilization is not a defect of the rule but the whole of it: the guarantee tolerates a steep emergency branch precisely because it promises very little there. It is also the rule's main limitation. At $99\%$ utilization the profile protects only a $1\%$ holder, so a protocol operating under it has promised nothing to the larger suppliers it is most likely to want when the pool is short of liquidity. That permissiveness is also its main limitation. At $99\%$ utilization the rule protects only a $1\%$ holder, so a protocol operating under it has promised nothing to the larger suppliers it is most likely to want when the pool is short of liquidity. Figure~\ref{fig:envelope} compares the two profiles and the envelopes they induce.
+Reading the profile directly is the quickest way to see what this guarantee is worth. It protects half the pool at $50\%$ utilization, a tenth of it at $90\%$, and only a hundredth at $99\%$. The permissiveness near full utilization is not a defect of the rule but the whole of it: the guarantee tolerates a steep emergency branch precisely because it promises very little there. It is also the rule's main limitation. At $99\%$ utilization the profile protects only a $1\%$ holder, so a protocol operating under it has promised nothing to the larger suppliers it is most likely to want when the pool is short of liquidity. Figure~\ref{fig:envelope} compares the two profiles and the envelopes they induce.
 
 \begin{figure}[htbp]
 \centering
@@ -436,7 +441,7 @@ First take a $10{,}000$ USDT depositor in a pool with $1$ million USDT supply. T
 
 Higher supplier earnings on an unchanged history are funded by borrower payments. Since this depositor owns $1\%$ of the pool, each additional unit of aggregate borrower interest contributes $0.0095$ units to the depositor after the carveout. The guarantee controls the response to adding capital; it does not determine whether the price level is desirable for either side of the market.
 
-Appendix~\ref{app:histories} considers repeated deposits, stronger protection targets and different utilization exposures. Those comparisons retain identical histories across curves to isolate pricing. Predicting how demand, liquidity or risk responds to repricing requires a separate model and is outside the claim here.
+Appendix~\ref{app:histories} considers repeated deposits, stronger protection targets and different utilization exposures. Those comparisons retain identical histories across curves to isolate pricing. Predicting how demand, liquidity or risk responds to repricing requires a separate model, such as those of~\cite{baude-optimal,agilerate}, and is outside the claim here.
 
 \section{Checking the Constraint Onchain}
 \label{sec:onchain}
@@ -466,6 +471,50 @@ The two rules are particular profiles. A flat target gives the constant ceiling 
 The multiple kink comparison separates the guarantee from the pricing decision. A minimum rate curve need not preserve supplier income. A repair that never lowers rates does preserve it under identical balances and market histories, with the increase paid by borrowers. Analytic replacement regions can require much less repricing than a coarse fixed knot implementation, and a late power branch need not rejoin before the original maximum. These are reasons to state the fixed endpoints, allowed knot changes and protection target together.
 
 On a piecewise linear curve the constraint is checked at segment endpoints. Smoothness is a further choice: continuous elasticity removes jumps in the advertised protection at the cost of headroom above $K^*$. The mathematical result is deposit income monotonicity within the chosen profile. Whether the resulting prices improve participation or market outcomes is a separate question.
+
+\section*{Disclosure}
+
+Ahzam Khan works at Velocity (formerly Drift Protocol), which operates a perpetual exchange with borrow and lend markets. Cavey Cool works at Temporal. The views here are the authors' own.
+
+\begin{thebibliography}{9}
+
+\bibitem{aave}
+Aave.
+\newblock Aave protocol whitepaper, version 1.0.
+\newblock January 2020.
+\newblock \url{https://github.com/aave/aave-protocol/blob/master/docs/Aave_Protocol_Whitepaper_v1_0.pdf}
+
+\bibitem{agilerate}
+M.~Bastankhah, V.~Nadkarni, X.~Wang and P.~Viswanath.
+\newblock AgileRate: Bringing adaptivity and robustness to DeFi lending markets.
+\newblock arXiv:2410.13105, 2024.
+
+\bibitem{bartoletti}
+M.~Bartoletti, J.~H.-y. Chiang and A.~Lluch-Lafuente.
+\newblock SoK: Lending pools in decentralized finance.
+\newblock arXiv:2012.13230, 2020.
+
+\bibitem{baude-optimal}
+B.~Baude, D.~Challet and I.~Muni Toke.
+\newblock Optimal risk-aware interest rates for decentralized lending protocols.
+\newblock arXiv:2502.19862, 2025.
+
+\bibitem{baude-leverage}
+B.~Baude, V.~Danos and H.~El Khalloufi.
+\newblock Leveraged positions on decentralized lending platforms.
+\newblock arXiv:2601.14005, 2026.
+
+\bibitem{gudgeon}
+L.~Gudgeon, S.~Werner, D.~Perez and W.~J. Knottenbelt.
+\newblock DeFi protocols for loanable funds: Interest rates, liquidity and market efficiency.
+\newblock In \emph{Proceedings of the 2nd ACM Conference on Advances in Financial Technologies}, 2020.
+
+\bibitem{compound}
+R.~Leshner and G.~Hayes.
+\newblock Compound: The money market protocol.
+\newblock Whitepaper, version 1.0, February 2019.
+
+\end{thebibliography}
 
 \clearpage
 \appendix
@@ -553,7 +602,7 @@ What this buys needs stating precisely. This particular repair lies below the or
 \section{Constructions for Several Kinks}
 \label{app:multi}
 
-Assume a multiple kink USDT market with a $0.5\%$ minimum borrow APR, an $80\%$ main kink at $5.25\%$ APR, and a $90\%$ maximum. Below the main kink the rate is $\max\{0.5\%,5.25\%\,U/0.8\}$. Above it, straight segments connect the knots in Table~\ref{tab:multi}. These are illustrative inputs, not measurements of a live market or a proposed parameter update. All fixed-knot recursions below use the complete grid: $0\%$, the exact floor crossing $U=0.005(0.8)/0.0525\approx7.619\%$, and the seven utilizations in Table~\ref{tab:multi}.
+Assume a multiple kink USDT market with a $0.5\%$ minimum borrow APR, an $80\%$ main kink at $5.25\%$ APR, and a $90\%$ maximum. Below the main kink the rate is $\max\{0.5\%,5.25\%\,U/0.8\}$. Above it, straight segments connect the knots in Table~\ref{tab:multi}. The parameters are drawn from a deployed configuration; they are not measurements of live market activity or a proposed parameter update. All fixed-knot recursions below use the complete grid: $0\%$, the exact floor crossing $U=0.005(0.8)/0.0525\approx7.619\%$, and the seven utilizations in Table~\ref{tab:multi}.
 
 \begin{table}[htbp]
 \centering
@@ -717,7 +766,7 @@ Under both guarantees on the fixed knots, the three repairs coincide and pay app
 \label{fig:both-lifecycle}
 \end{figure}
 
-Higher supplier income on an unchanged history is funded by higher borrower payments. The single deposit supplier owns $1\%$ of the pool, so each additional unit of aggregate borrower interest contributes $0.0095$ units to that supplier after the carveout. Figure~\ref{fig:protection-cost} follows this transfer as the fixed share target varies, retaining the fresh guarantee, original knots and maximum; it measures the resulting prices rather than their effect on welfare.
+As in Section~\ref{sec:earnings}, higher supplier income on an unchanged history is funded by borrowers. Figure~\ref{fig:protection-cost} follows this transfer as the fixed share target varies, retaining the fresh guarantee, original knots and maximum; it measures the resulting prices rather than their effect on welfare.
 
 \begin{figure}[htbp]
 \centering

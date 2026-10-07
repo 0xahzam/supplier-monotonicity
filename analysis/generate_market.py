@@ -314,7 +314,7 @@ axes[0, 1].xaxis.set_major_formatter(PercentFormatter(1, decimals=1))
 save(
     f,
     "01-usdt-baseline",
-    "USDT borrow-rate configuration from the packaged illustrative configuration. (a) Full range, including the 0.5% floor and 80% kink. (b) Detail near the final knots. Markers show analytical breakpoints. The 99–99.5% interval accounts for 21.1875 percentage points of borrow APR. These are illustrative parameters, not a deployed configuration.",
+    "USDT borrow-rate configuration, drawn from a deployed configuration. (a) Full range, including the 0.5% floor and 80% kink. (b) Detail near the final knots. Markers show analytical breakpoints. The 99–99.5% interval accounts for 21.1875 percentage points of borrow APR. The parameters are not live market data.",
 )
 
 f, axes = figgrid(rows=2, cols=3)
