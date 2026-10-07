@@ -62,6 +62,78 @@
       "status": "PASS"
     },
     {
+      "name": "Withdrawal: amount",
+      "computed_lower": 302015.7157499146,
+      "computed_upper": 302015.7157499146,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "884000000/2927",
+      "printed": 302000,
+      "tolerance": 100,
+      "status": "PASS"
+    },
+    {
+      "name": "Withdrawal: income",
+      "computed_lower": 188336.98830409357,
+      "computed_upper": 188336.98830409357,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "32205625/171",
+      "printed": 188300,
+      "tolerance": 50,
+      "status": "PASS"
+    },
+    {
+      "name": "Withdrawal: income gain percent",
+      "computed_lower": 17.876381351333794,
+      "computed_upper": 17.876381351333794,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "19536400/1092861",
+      "printed": 18,
+      "tolerance": 0.5,
+      "status": "PASS"
+    },
+    {
+      "name": "Withdrawal: share of balance percent",
+      "computed_lower": 30.20157157499146,
+      "computed_upper": 30.20157157499146,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "88400/2927",
+      "printed": 30,
+      "tolerance": 0.5,
+      "status": "PASS"
+    },
+    {
+      "name": "Withdrawal: utilization percent",
+      "computed_lower": 85.58479532163743,
+      "computed_upper": 85.58479532163743,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "14635/171",
+      "printed": 85.6,
+      "tolerance": 0.05,
+      "status": "PASS"
+    },
+    {
+      "name": "Withdrawal: alpha(1+eta) at optimum",
+      "computed_lower": 1.0,
+      "computed_upper": 1.0,
+      "enclosure_width_upper": 0.0,
+      "method": "exact rational",
+      "note": "",
+      "exact": "1",
+      "printed": 1,
+      "tolerance": 0,
+      "status": "PASS"
+    },
+    {
       "name": "Single kink: elasticity at foot",
       "computed_lower": 76.0,
       "computed_upper": 76.0,

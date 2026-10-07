@@ -7,21 +7,21 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = ROOT.parent / "paper.tex"
+SOURCE = ROOT.parent / "build" / "main.tex"
 
 # Status applies to the displayed expression, not automatically to nearby prose.
 # 'supported' means checked components exist, but the full paper statement has
 # remaining assembly, regularity, existence or correspondence obligations.
 COVERAGE = {
     1: ("definition", "Supply-rate definition; algebraic substitution U=B/T."),
-    2: ("definition", "Income model, encoded in Core.income."),
-    3: ("definition", "Resulting share, encoded in Core.share."),
+    2: ("definition", "Income model, encoded in Model.income."),
+    3: ("definition", "Resulting share, encoded in Model.share."),
     4: ("proved", "utilization_hasDerivAt; smooth deposit path."),
     5: ("proved", "income_hasDerivAt_raw and income_hasDerivAt."),
     6: ("proved", "income_hasDerivAt / income_deriv."),
     7: (
         "proved",
-        "logarithmic_elasticity: derivative of log(R(exp x)); ordinary notation correspondence reviewed manually.",
+        "logarithmic_elasticity: derivative of log(R(exp x)).",
     ),
     8: ("proved", "income_deriv."),
     9: ("proved", "income_deriv_nonneg_iff."),
@@ -152,7 +152,7 @@ COVERAGE = {
     ),
     51: (
         "proved",
-        "continuous_rate_supremum_strict: positive continuous rate, interior differentiability, continuous derivative/rate quotient, and endpoint budget; explicit C1-data convention in Endpoint.lean.",
+        "continuous_rate_supremum_strict: positive continuous rate, interior differentiability, continuous derivative/rate quotient, and endpoint budget; explicit C1-data convention in Smoothing.lean.",
     ),
     52: (
         "definition",
@@ -234,7 +234,7 @@ def main():
                 "line_start": text.count("\n", 0, start) + 1,
                 "line_end": text.count("\n", 0, end) + 1,
                 "verbatim": text[start:end],
-                "status": "indexed, not individually certified",
+                "status": "indexed",
                 "evidence": "",
             }
             if prefix == "D":
@@ -298,11 +298,11 @@ def main():
             for m in re.finditer(r"\S(?:.*?\S)?(?=\n\s*\n|\Z)", text[start:], re.DOTALL)
         ],
     )
-    counts = {k: sum(x["kind"] == k for x in items) for k in {x["kind"] for x in items}}
+    counts = {k: sum(x["kind"] == k for x in items) for k in sorted({x["kind"] for x in items})}
     rows = [
         "# Equation and theorem coverage",
         "",
-        "Reference: `../paper.tex`. **Supported** means proof components exist but the full claim is not yet certified. Definitions are model inputs, not proved economic facts. This table is not a whole-paper certificate.",
+        "Reference: `../build/main.tex`. **Proved** means a Lean theorem states the claim. **Supported** means Lean proves parts of the claim and the entry names the missing step. **Open** means the claim is not formalized. **Definition** marks a model input.",
         "",
         "| ID | Source line | Status | Evidence / remaining obligation |",
         "|---|---:|---|---|",
@@ -314,7 +314,7 @@ def main():
             )
     rows += [
         "",
-        "Inline fragments, captions, tables and source blocks are indexed during verification but are not individually certified.",
+        "Inline fragments, captions, tables and source blocks are hashed and counted but have no individual status.",
         "",
         f"Inventory counts (overlapping): `{counts}`.",
         "",

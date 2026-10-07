@@ -279,6 +279,22 @@ def main():
     record("Failure: deposit to kink", Q(8300000) / Q(4, 5) - 10000000, 375000, 0)
     record("Failure: balance increase percent", Q(375000, 1000000) * 100, 37.5, 0)
     record("Failure: income decline percent", (1 - Q(55000) / Q(159775)) * 100, 66, 1)
+    # Best withdrawal. Above the kink, with supply S in USD millions, income is
+    # B(S - 9)(19/4 B/S - 15/4)/S = B(-15/4 + c1/S - c2/S^2), maximized at S = 2 c2 / c1.
+    wB = Q(83, 10)
+    c1, c2 = Q(19, 4) * wB + Q(15, 4) * 9, 9 * Q(19, 4) * wB
+    wS = 2 * c2 / c1
+    wU = wB / wS
+    rate_at = Q(19, 4) * wU - Q(15, 4)
+    best = (wS - 9) * wU * rate_at * 1000000
+    record("Withdrawal: amount", (10 - wS) * 1000000, 302000, 100)
+    record("Withdrawal: income", best, 188300, 50)
+    record("Withdrawal: income gain percent", (best / Q(159775) - 1) * 100, 18, 0.5)
+    record("Withdrawal: share of balance percent", (10 - wS) * 100, 30, 0.5)
+    record("Withdrawal: utilization percent", wU * 100, 85.6, 0.05)
+    record(
+        "Withdrawal: alpha(1+eta) at optimum", (wS - 9) / wS * (1 + wU * Q(19, 4) / rate_at), 1, 0
+    )
     record("Single kink: elasticity at foot", Q(4, 5) * Q(19, 4) / Q(1, 20), 76, 0)
     record("Single kink: elasticity at full utilization", Q(19, 4), 4.75, 0)
     record("Envelope crossing utilization percent", Q(19, 20) * 100, 95, 0)

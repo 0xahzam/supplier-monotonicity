@@ -3,10 +3,10 @@ __pycache__/
 .pytest_cache/
 .venv/
 .lake/
-# LaTeX build artefacts at the repo root only, so that recorded
-# evidence under verification/evidence is not swept up as well.
-/*.aux
-/*.log
-/*.out
-/*.toc
+# LaTeX artefacts from compiling by hand in build/; reproduce.py compiles elsewhere.
+/build/*.aux
+/build/*.log
+/build/*.out
+/build/*.toc
+/build/main.pdf
 .ruff_cache/

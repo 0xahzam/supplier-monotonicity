@@ -10,12 +10,43 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-LEAN = ROOT / "lean"
+LEAN = ROOT.parent / "lean"
+CHALLENGE = LEAN / "ComparatorChallenges" / "SupplierMonotonicity.lean"
 EVIDENCE = ROOT / "evidence"
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def squash(text):
+    return re.sub(r"\s+", "", text)
+
+
+def check_challenge(source):
+    """Every definition and statement in the comparator challenge must match the library
+    exactly (whitespace aside). Comparator does the kernel-level check; this catches drift
+    on machines where comparator is not installed."""
+    challenge = re.sub(r"/-.*?-/", "", CHALLENGE.read_text(), flags=re.DOTALL)
+    library = re.sub(r"/-.*?-/", "", source, flags=re.DOTALL)
+    defs = re.findall(r"^(?:noncomputable )?(def (\w+)[^\n]*(?:\n  [^\n]*)*)", challenge, re.M)
+    theorems = re.findall(r"^(theorem (\w+).*?) := by\n  sorry", challenge, re.M | re.DOTALL)
+    if not defs or not theorems:
+        raise RuntimeError("Comparator challenge has no definitions or theorems")
+    for text, name in defs:
+        found = re.search(
+            rf"^(?:noncomputable )?(def {name}\b[^\n]*(?:\n  [^\n]*)*)", library, re.M
+        )
+        if not found or squash(found.group(1)) != squash(text):
+            raise RuntimeError(f"Challenge definition {name} differs from the library")
+    for text, name in theorems:
+        start = library.find(f"theorem {name} ")
+        if start < 0 or not squash(library[start:]).startswith(squash(text) + ":="):
+            raise RuntimeError(f"Challenge statement {name} differs from the library")
+    config = json.loads(CHALLENGE.with_suffix(".json").read_text())
+    if sorted(config["theorem_names"]) != sorted(f"SupplierMonotonicity.{n}" for _, n in theorems):
+        raise RuntimeError("Comparator config theorem list does not match the challenge file")
+    return len(theorems)
 
 
 def run(label, command, cwd=ROOT):
@@ -46,16 +77,19 @@ def main():
     uncommented = re.sub(r"/-.*?-/|--[^\n]*", "", source, flags=re.DOTALL)
     if re.search(r"\b(sorry|admit|axiom|unsafe|native_decide)\b", uncommented):
         raise RuntimeError("Proof escape hatch found in project sources")
+    challenge_count = check_challenge(source)
     (LEAN / "Audit.lean").write_text(
         "import SupplierMonotonicity\n\n"
         + "\n".join(f"#print axioms SupplierMonotonicity.{name}" for name in names)
         + "\n"
     )
     inputs = [
-        ROOT.parent / "paper.tex",
+        ROOT.parent / "build" / "main.tex",
         *proof_files,
         LEAN / "SupplierMonotonicity.lean",
         LEAN / "Audit.lean",
+        CHALLENGE,
+        CHALLENGE.with_suffix(".json"),
         LEAN / "lakefile.toml",
         LEAN / "lake-manifest.json",
         LEAN / "lean-toolchain",
@@ -65,7 +99,7 @@ def main():
         *ROOT.parent.glob("analysis/data/*.csv"),
     ]
     before = {str(p.relative_to(ROOT.parent)): digest(p) for p in inputs}
-    run("lean-build", [lake, "build"], LEAN)
+    run("lean-build", [lake, "build", "SupplierMonotonicity", "ComparatorChallenges"], LEAN)
     output = run("lean-axioms", [lake, "env", "lean", "Audit.lean"], LEAN)
     (EVIDENCE / "lean-axioms.log").write_text(output)
     axiom_sets = re.findall(r"depends on axioms:\s*\[([^\]]*)\]", output)
@@ -95,10 +129,11 @@ def main():
         "whole_paper_certified": False,
         "scope": "Encoded theorems, independent arithmetic and selected caption checks; see COVERAGE.md for unproved obligations.",
         "theorem_count": len(names),
+        "comparator_statements": challenge_count,
         "theorems": names,
         "axioms": sorted(used),
         "toolchain": (LEAN / "lean-toolchain").read_text().strip(),
-        "manuscript_sha256": digest(ROOT.parent / "paper.tex"),
+        "manuscript_sha256": digest(ROOT.parent / "build" / "main.tex"),
         "rational_comparisons": len(numerics["checks"]),
         "supplementary": supplementary,
         "input_sha256": before,

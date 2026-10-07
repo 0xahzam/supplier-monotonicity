@@ -1,0 +1,21 @@
+{
+  "challenge_module": "ComparatorChallenges.SupplierMonotonicity",
+  "solution_module": "SupplierMonotonicity.Main",
+  "theorem_names": [
+    "SupplierMonotonicity.marginal_supplier_income",
+    "SupplierMonotonicity.endpoint_impossibility_bound",
+    "SupplierMonotonicity.endpoint_bound_tight",
+    "SupplierMonotonicity.global_fresh_depositor",
+    "SupplierMonotonicity.fresh_boundary_curve",
+    "SupplierMonotonicity.c1_makes_kstar_unattainable",
+    "SupplierMonotonicity.c1_ceiling_feasible",
+    "SupplierMonotonicity.cost_of_smoothing"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

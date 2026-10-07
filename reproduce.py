@@ -46,8 +46,8 @@ def main():
         if not shutil.which(command):
             raise RuntimeError(f"{command} is required; see README.md")
     inputs = [
-        ROOT / "paper.tex",
-        ROOT / "paperstyle.sty",
+        ROOT / "build/main.tex",
+        ROOT / "build/paperstyle.sty",
         ROOT / "reproduce.py",
         *sorted((ROOT / "analysis").rglob("*.py")),
         ROOT / "analysis/pyproject.toml",
@@ -74,13 +74,22 @@ def main():
             env,
         )
     run("verification", [sys.executable, "verification/check.py"], ROOT, env)
-    for n in range(1, 4):
-        latex = run(
-            f"latex-pass{n}",
-            ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paper.tex"],
-            ROOT,
-            env,
-        )
+    # Compile from build/ into a scratch directory so no LaTeX artefacts land in the bundle.
+    with tempfile.TemporaryDirectory(prefix="paper-latex-") as out:
+        for n in range(1, 4):
+            latex = run(
+                f"latex-pass{n}",
+                [
+                    "pdflatex",
+                    "-interaction=nonstopmode",
+                    "-halt-on-error",
+                    f"-output-directory={out}",
+                    "main.tex",
+                ],
+                ROOT / "build",
+                env,
+            )
+        shutil.copyfile(Path(out) / "main.pdf", ROOT / "paper.pdf")
     if re.search(
         r"undefined references|undefined citations|Rerun to get|Overfull \\[hv]box",
         latex,
@@ -89,7 +98,7 @@ def main():
             "Unresolved LaTeX references or overflowing boxes; inspect latex-pass3.log"
         )
     figures = re.findall(
-        r"\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}", (ROOT / "paper.tex").read_text()
+        r"\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}", (ROOT / "build/main.tex").read_text()
     )
     if len(figures) != 22 or any(not (ROOT / "figures" / name).is_file() for name in figures):
         raise RuntimeError("Paper figure inventory does not match 22 generated figures")
@@ -102,7 +111,7 @@ def main():
     status = {
         "status": "PASS",
         "whole_paper_certified": False,
-        "paper_sha256": sha256(ROOT / "paper.tex"),
+        "paper_sha256": sha256(ROOT / "build/main.tex"),
         "pdf_sha256": sha256(ROOT / "paper.pdf"),
         "python_tests": re.findall(r"\d+ passed", tests)[-1],
         "lean_theorems": proof["theorem_count"],
@@ -121,8 +130,6 @@ def main():
         },
     }
     (EVIDENCE / "release.json").write_text(json.dumps(status, indent=2) + "\n")
-    for suffix in ["aux", "log", "out", "toc"]:
-        (ROOT / f"paper.{suffix}").unlink(missing_ok=True)
     print(
         f"PASS: {status['python_tests']}; {status['lean_theorems']} Lean theorems; 22 figures; paper.pdf rebuilt."
     )

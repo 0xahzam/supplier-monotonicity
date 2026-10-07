@@ -96,14 +96,23 @@ v = np.linspace(0, 1, 1200)
 ax[0, 0].plot(v, single(v)[0], color="black")
 pct(ax[0, 0])
 ax[0, 0].set_ylabel("Borrow APR")
-x = np.linspace(0, 1.5e6, 2000)
+x = np.linspace(-6e5, 1.5e6, 2800)
 inc, mar = income(single, x, 1e6, 1e7, 8.3e6)
+# Income-maximizing withdrawal: on the steep branch income is -15/4 + c1/S - c2/S^2 times B
+# in supply S (USD millions), maximized at S = 2 c2 / c1, where alpha(1 + eta) = 1.
+c1, c2 = 19 / 4 * 8.3 + 15 / 4 * 9, 9 * 19 / 4 * 8.3
+best = (10 - 2 * c2 / c1) * 1e6
+best_income = income(single, np.array([-best]), 1e6, 1e7, 8.3e6)[0][0]
 ax[0, 1].plot(x / 1000, inc / 1000, color="black")
 ax[0, 1].axvline(375, color="gray", ls="--", lw=0.6)
-ax[0, 1].set(xlabel="Additional deposit (USD thousands)", ylabel="Annual income (USD thousands)")
+ax[0, 1].axvline(0, color="gray", lw=0.4)
+ax[0, 1].plot(-best / 1000, best_income / 1000, "o", color="black", ms=3.5)
+ax[0, 1].set(xlabel="Change in balance (USD thousands)", ylabel="Annual income (USD thousands)")
 audit["failure"] = {
-    "before": float(inc[0]),
+    "before": float(income(single, np.array([0.0]), 1e6, 1e7, 8.3e6)[0][0]),
     "at_kink": float(income(single, np.array([375000]), 1e6, 1e7, 8.3e6)[0][0]),
+    "best_withdrawal": float(best),
+    "best_withdrawal_income": float(best_income),
 }
 save(f, "T01-failure")
 
