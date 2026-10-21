@@ -166,7 +166,7 @@ A finite deposit is a chain of marginal ones. If the condition holds at every po
 
 The condition also explains both features of Section~\ref{sec:failure}. Above the kink the slope is $m=(R_{\max}-R_o)/(1-O)=4.75$, and on a straight segment $R_b'=m$. At the starting utilization of $83\%$ the borrow rate is $19.25\%$, so $\eta=0.83\times4.75/0.1925\approx20.5$ and $\alpha(1+\eta)\approx0.1\times21.5\approx2.15$. That is more than twice the limit, so the deposit loses money, as Section~\ref{sec:failure} found. On the steep branch elasticity is $Um/(R_o+m(U-O))$. It is largest just above the kink, where the rate is lowest. There $\eta=Om/R_o=76$, so only suppliers below $1/77\approx1.3\%$ of the pool are protected. At full utilization it falls to $m/R_{\max}=4.75$, because the same slope moves a high rate by a smaller percentage. The steep branch is therefore most dangerous at its foot rather than its top. Below the kink this curve has $\eta=1$, so the condition holds again for any share up to one half and income starts to rise. That is why the income trough in Figure~\ref{fig:failure-mode} sits exactly at the kink.
 
-Read in the other direction, the same condition prices a withdrawal. Wherever $\alpha(1+\eta)>1$ the derivative in Equation~\ref{eq:marginal} is negative, so removing liquidity raises the supplier's income. Withdrawing lowers the supplier's share and raises utilization, which on the steep branch lowers elasticity, so $\alpha(1+\eta)$ falls until income peaks where it reaches $1$. In Section~\ref{sec:failure} this is the withdrawal of about \$302{,}000, at which $\alpha(1+\eta)=1$ exactly. So the supplier the pool most needs earns more by withdrawing, and withdrawing pushes utilization further above $O$.
+Read in the other direction, the same condition prices a withdrawal. Wherever $\alpha(1+\eta)>1$ the derivative in Equation~\ref{eq:marginal} is negative, so removing liquidity raises the supplier's income. Withdrawing lowers the supplier's share and raises utilization, which on the steep branch lowers elasticity, so $\alpha(1+\eta)$ falls until income peaks where it reaches $1$. In Section~\ref{sec:failure} this is the withdrawal of about \$302{,}000, at which $\alpha(1+\eta)=1$ exactly. So the supplier the pool most needs earns more by leaving, and leaving pushes utilization further above $O$.
 
 \section{The Admissible Family}
 \label{sec:family}
@@ -249,7 +249,7 @@ K^*=\frac{\ln(R_{\max}/R_o)}{\ln(1/O)}
 so an elasticity ceiling $K<K^*$ is infeasible whatever the shape of the curve.
 \end{theorem}
 
-The bound is tight, since the power law with $K=K^*$ reaches $R_{\max}$ exactly at $U=1$. Appendix~\ref{sec:smooth} shows that if the curve must also have a continuous derivative, no curve attains $K^*$.
+The bound is tight, since the power law with $K=K^*$ reaches $R_{\max}$ exactly at $U=1$. Appendix~\ref{sec:smooth} shows that with a continuous derivative no curve attains $K^*$.
 
 Since protected share is $1/(1+K)$, the endpoints also cap the guarantee a protocol can offer without moving them,
 \begin{equation}

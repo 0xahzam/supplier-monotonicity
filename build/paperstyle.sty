@@ -93,6 +93,7 @@
     \setlength{\itemindent}{0pt}%
     \setlength{\parsep}{\parskip}%
   }\item\relax
+  \setlength{\parfillskip}{0pt plus \dimexpr\linewidth-7em\relax}%
 }{\end{list}}
 \makeatother
 
@@ -108,3 +109,7 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \numberwithin{equation}{section}
+
+% Keep the last line of a paragraph at least 7em long, so no paragraph ends on a lone word.
+\setlength{\parfillskip}{0pt plus \dimexpr\textwidth-7em\relax}
+\setlength{\emergencystretch}{1em}

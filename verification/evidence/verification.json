@@ -125,7 +125,7 @@
     "propext"
   ],
   "toolchain": "leanprover/lean4:v4.24.0",
-  "manuscript_sha256": "fd831b5033efd2839103394a2635aa6759ed52d943990a85ad5028da3a4d828c",
+  "manuscript_sha256": "dbf4e8e33b3696c62ecbfb830953f0b2621953b76c5a18922cb1b608d8d1b3d2",
   "rational_comparisons": 77,
   "supplementary": {
     "caption_checks": {
@@ -150,7 +150,7 @@
     }
   },
   "input_sha256": {
-    "build/main.tex": "fd831b5033efd2839103394a2635aa6759ed52d943990a85ad5028da3a4d828c",
+    "build/main.tex": "dbf4e8e33b3696c62ecbfb830953f0b2621953b76c5a18922cb1b608d8d1b3d2",
     "lean/SupplierMonotonicity/AccumulatedInterest.lean": "5bcf6798ecf239008a7a63c7e2dd737d172b02e4e491791cef0293533a8d4512",
     "lean/SupplierMonotonicity/AdmissibleFamily.lean": "0c1a897728e1eb291476c98bfa262ff45af28f7669ecd5eb5bc855d1cee88976",
     "lean/SupplierMonotonicity/FiniteDeposits.lean": "aae0ddbe4cd6f7a59aaad7de6e87635ecbbca17cb2761b4fb702bbfcd1596936",
