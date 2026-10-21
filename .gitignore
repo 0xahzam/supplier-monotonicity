@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+.venv/
+.lake/
+# LaTeX artefacts from compiling by hand in build/; reproduce.py compiles elsewhere.
+/build/*.aux
+/build/*.log
+/build/*.out
+/build/*.toc
+/build/main.pdf
+.ruff_cache/

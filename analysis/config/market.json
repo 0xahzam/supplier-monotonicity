@@ -1,0 +1,34 @@
+{
+  "name": "USDT",
+  "optimal_utilization": 800000,
+  "optimal_borrow_rate": 52500,
+  "max_borrow_rate": 900000,
+  "min_borrow_rate": 1,
+  "carveout_factor": 50000,
+  "segments": [
+    [
+      850000,
+      50
+    ],
+    [
+      900000,
+      100
+    ],
+    [
+      950000,
+      150
+    ],
+    [
+      990000,
+      200
+    ],
+    [
+      995000,
+      250
+    ],
+    [
+      1000000,
+      250
+    ]
+  ]
+}

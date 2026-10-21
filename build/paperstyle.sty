@@ -1,0 +1,141 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{paperstyle}[2026/09/12 Standard research paper style]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage{microtype}
+\RequirePackage[a4paper,margin=30mm]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{enumitem}
+\RequirePackage{hyperref}
+% Paragraphs are separated by vertical space, with no first-line indent.
+% The parskip package is used so that lists and theorem environments do not
+% inherit the extra space.
+\RequirePackage[skip=0.72\baselineskip plus 2pt minus 1pt, indent=0pt]{parskip}
+% Keep a section heading with enough of its first paragraph, so that a heading
+% is never stranded at the foot of a page. This is the standard needspace
+% construction, inlined because needspace is not in a basic TeX installation.
+\RequirePackage{etoolbox}
+\makeatletter
+\newcommand{\keepheadingspace}[1]{%
+  \begingroup
+    \setlength{\dimen@}{#1}%
+    \vskip\z@\@plus\dimen@
+    \penalty -100
+    \vskip\z@\@plus -\dimen@
+    \vskip\dimen@
+    \penalty 9999
+    \vskip -\dimen@
+    \vskip\z@skip
+  \endgroup}
+\makeatother
+\pretocmd{\section}{\keepheadingspace{4\baselineskip}}{}{}
+\pretocmd{\subsection}{\keepheadingspace{3\baselineskip}}{}{}
+
+\hypersetup{
+  hidelinks,
+  pdfborder={0 0 0}
+}
+
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{9pt plus 2pt minus 3pt}
+\setlength{\belowdisplayskip}{9pt plus 2pt minus 3pt}
+\linespread{1.03}
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\allowdisplaybreaks
+
+\setlist[itemize]{leftmargin=2em,itemsep=2pt,topsep=5pt}
+\setlist[enumerate]{leftmargin=2em,itemsep=2pt,topsep=5pt}
+\renewcommand{\arraystretch}{1.15}
+
+\makeatletter
+\newcommand{\researchsubtitle}[1]{\gdef\@researchsubtitle{#1}}
+\newcommand{\researchshorttitle}[1]{\gdef\@researchshorttitle{#1}}
+\newcommand{\@researchsubtitle}{}
+\newcommand{\@researchshorttitle}{}
+
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}
+    \vspace{0.55em}
+    {\large \@researchsubtitle\par}
+    \vspace{1.25em}
+    {\normalsize \@author\par}
+    \vspace{0.65em}
+    {\normalsize \@date\par}
+  \end{center}
+  \vspace{1.25em}
+}
+\makeatother
+
+% Run-in paragraph headings: bold, followed by a normal word space.
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+  {\parskip}{-0.55em}{\normalfont\normalsize\bfseries}}
+\makeatother
+
+% The article abstract environment sets its own indent; match the body.
+\makeatletter
+\renewenvironment{abstract}{%
+  \small
+  \begin{center}\bfseries \abstractname\end{center}%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{0.07\textwidth}%
+    \setlength{\rightmargin}{\leftmargin}%
+    \setlength{\listparindent}{0pt}%
+    \setlength{\itemindent}{0pt}%
+    \setlength{\parsep}{\parskip}%
+  }\item\relax
+  \setlength{\parfillskip}{0pt plus \dimexpr\linewidth-7em\relax}%
+}{\end{list}}
+\makeatother
+
+\newtheoremstyle{paperplain}{0.72\baselineskip}{0.72\baselineskip}{\itshape}{}{\bfseries}{.}{ }{}
+\newtheoremstyle{paperdefinition}{0.72\baselineskip}{0.72\baselineskip}{\normalfont}{}{\bfseries}{.}{ }{}
+\theoremstyle{paperplain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{paperdefinition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+
+% Keep the last line of a paragraph at least 7em long, so no paragraph ends on a lone word.
+\setlength{\parfillskip}{0pt plus \dimexpr\textwidth-7em\relax}
+\setlength{\emergencystretch}{1em}
+
+
+% Let pages carry more floats and fewer half-empty float pages.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+
+% Start a new page only when figures from the previous section are still waiting,
+% so a section never ends with its own figures printed after the next heading.
+\makeatletter
+\newcommand{\flushpendingfloats}{\par\begingroup\let\@elt\relax
+  \edef\@tempa{\@deferlist\@dbldeferlist}%
+  \ifx\@tempa\@empty\else\clearpage\fi\endgroup}
+\setlength{\@fptop}{0pt}
+\makeatother
+
+% Captions in small type, as in most papers.
+\RequirePackage[font=small,skip=6pt]{caption}
+% Slightly tighter space around figures and tables.
+\setlength{\floatsep}{10pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{14pt plus 2pt minus 4pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}

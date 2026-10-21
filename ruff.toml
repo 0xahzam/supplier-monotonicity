@@ -1,0 +1,26 @@
+# Applies to every Python file in this bundle. Vendored dependencies and
+# generated output are excluded.
+line-length = 100
+target-version = "py312"
+
+extend-exclude = [
+    ".venv",
+    "**/.lake",
+    "figures",
+]
+
+[lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = [
+    "E501",   # long lines: long prose captions are deliberate
+    "E741",   # ambiguous names: l, I, O are the paper's own symbols
+    "E731",   # lambda assignment: reads closer to the paper's function notation
+    "B905",   # zip strict=: arrays here are equal length by construction
+    "B008",   # call in default argument: used for frozen numeric defaults
+    "B023",   # loop-variable closure: every such lambda is invoked in-iteration
+]
+
+[lint.per-file-ignores]
+# matplotlib.use("Agg") must run before pyplot is imported.
+"analysis/generate_market.py" = ["E402"]
+"analysis/generate_figures.py" = ["E402"]

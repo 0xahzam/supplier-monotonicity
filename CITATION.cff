@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the paper as below."
+title: "Depositing More Should Not Earn Less"
+authors:
+  - family-names: Khan
+    given-names: Ahzam
+  - family-names: Cool
+    given-names: Cavey
+date-released: 2026-10-07
+license: Apache-2.0
+repository-code: "https://github.com/0xahzam/supplier-monotonicity"
+preferred-citation:
+  type: article
+  title: "Depositing More Should Not Earn Less"
+  authors:
+    - family-names: Khan
+      given-names: Ahzam
+    - family-names: Cool
+      given-names: Cavey
+  year: 2026
+  month: 10
+  url: "https://github.com/0xahzam/supplier-monotonicity"

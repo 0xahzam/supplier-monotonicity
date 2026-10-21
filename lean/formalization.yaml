@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# Catalog of the formalized results of the paper. Paths are relative to lean/.
+version: "v0.4"
+
+project:
+  name: "Depositing More Should Not Earn Less"
+  description: "Lean formalization of the supplier-income monotonicity results in the accompanying paper."
+  authors: ["Ahzam Khan", "Cavey Cool"]
+  license: "Apache-2.0"
+
+sources:
+  - title: "Depositing More Should Not Earn Less"
+    authors: ["Ahzam Khan", "Cavey Cool"]
+    id: ../paper.pdf
+    type: article
+
+related_formalizations:
+  - id: https://github.com/leanprover-community/mathlib4
+    relationship: builds-on
+
+status:
+  scope: "Partial progress. Theorem 2 (locally absolutely continuous admissible family) is not formalized."
+  main_results:
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.marginal_supplier_income
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.endpoint_impossibility_bound
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.endpoint_bound_tight
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.global_fresh_depositor
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.fresh_boundary_curve
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.c1_makes_kstar_unattainable
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.c1_ceiling_feasible
+      file: SupplierMonotonicity/Main.lean
+
+    - comparator_config: ComparatorChallenges/SupplierMonotonicity.json
+      declaration: SupplierMonotonicity.cost_of_smoothing
+      file: SupplierMonotonicity/Main.lean
+
+automation:
+  methods:
+    - method: agent
+
+review:
+  status: unchecked
+
+acknowledgements: >-
+  Thanks to the authors of Lean 4, mathlib, Lake and Comparator.
