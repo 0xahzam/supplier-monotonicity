@@ -62,5 +62,5 @@
     ],
     "continuous_combined_min_base": 0.01698091211408883
   },
-  "checks": "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-knot KKT and integer/rational checks also run."
+  "checks": "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-kink KKT and integer/rational checks also run."
 }

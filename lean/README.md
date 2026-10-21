@@ -36,11 +36,11 @@ Modules follow the paper's sections.
 |---|---|---|
 | `Model` | §3 | `utilization`, `income`, `share`, `elasticity`, `kStar` |
 | `MarginalIncome` | §4, App. F | Income derivative, sign condition and its reverse, stationary point, safe share, full-supplier limit |
-| `FiniteDeposits` | §4, §7 | Gluing the sign condition across a finite partition of knots, finite withdrawals |
+| `FiniteDeposits` | §4, §7 | Gluing the sign condition across a finite partition of kinks, finite withdrawals |
 | `AdmissibleFamily` | §5 | Profiles and envelopes, smooth normalized-rate bound, building a curve from its elasticity |
 | `FixedShare` | §6 | Power-law boundary, endpoint bound `K*` |
 | `FreshDepositor` | §7 | Fresh-depositor envelope `u / (1 - u)`, hyperbolic boundary, piecewise linear form |
-| `Repairs` | §8, §9, App. B | Combining guarantees, knot-rate caps, floor/raise/lower recursions, analytic minorant |
+| `Repairs` | §8, §9, App. B | Combining guarantees, kink-rate caps, floor/raise/lower recursions, analytic minorant |
 | `AccumulatedInterest` | §10, App. C | Comparing accumulated interest |
 | `Onchain` | §11 | Endpoint-only check for piecewise linear curves, division-free form |
 | `Smoothing` | App. E | Strict bound for `C¹` curves, smoothstep profile, cost of smoothing |

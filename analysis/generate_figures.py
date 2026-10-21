@@ -103,14 +103,45 @@ inc, mar = income(single, x, 1e6, 1e7, 8.3e6)
 c1, c2 = 19 / 4 * 8.3 + 15 / 4 * 9, 9 * 19 / 4 * 8.3
 best = (10 - 2 * c2 / c1) * 1e6
 best_income = income(single, np.array([-best]), 1e6, 1e7, 8.3e6)[0][0]
+start_income = income(single, np.array([0.0]), 1e6, 1e7, 8.3e6)[0][0]
+kink_income = income(single, np.array([375000]), 1e6, 1e7, 8.3e6)[0][0]
+ax[0, 1].axvspan(x[0] / 1000, 0, color="0.93", lw=0)
 ax[0, 1].plot(x / 1000, inc / 1000, color="black")
+ax[0, 1].axhline(start_income / 1000, color="gray", ls=":", lw=0.7)
 ax[0, 1].axvline(375, color="gray", ls="--", lw=0.6)
 ax[0, 1].axvline(0, color="gray", lw=0.4)
-ax[0, 1].plot(-best / 1000, best_income / 1000, "o", color="black", ms=3.5)
+points = [
+    (-best, best_income, "Best withdrawal", (0, 6), "center", "bottom"),
+    (0, start_income, "Start", (-4, -4), "right", "top"),
+    (375000, kink_income, "Deposit to 80%", (6, -4), "left", "top"),
+]
+for dx, y, name, offset, ha, va in points:
+    ax[0, 1].plot(dx / 1000, y / 1000, "o", color="black", ms=3)
+    ax[0, 1].annotate(
+        f"{name}\n${y / 1000:.1f}k",
+        (dx / 1000, y / 1000),
+        xytext=offset,
+        textcoords="offset points",
+        ha=ha,
+        va=va,
+        fontsize=6.5,
+        linespacing=1.0,
+    )
+for xpos, name in [(0.03, "Withdraw"), (0.97, "Deposit")]:
+    ax[0, 1].text(
+        xpos,
+        0.04,
+        name,
+        transform=ax[0, 1].transAxes,
+        fontsize=6.5,
+        color="0.35",
+        ha="left" if xpos < 0.5 else "right",
+    )
+ax[0, 1].set_ylim(0, 230)
 ax[0, 1].set(xlabel="Change in balance (USD thousands)", ylabel="Annual income (USD thousands)")
 audit["failure"] = {
-    "before": float(income(single, np.array([0.0]), 1e6, 1e7, 8.3e6)[0][0]),
-    "at_kink": float(income(single, np.array([375000]), 1e6, 1e7, 8.3e6)[0][0]),
+    "before": float(start_income),
+    "at_kink": float(kink_income),
     "best_withdrawal": float(best),
     "best_withdrawal_income": float(best_income),
 }
@@ -223,7 +254,7 @@ class AnalyticRepair:
     """Exact running-envelope majorant/minorant of a piecewise linear baseline.
 
     F'=E F/U. Rminus=F min_{v<=U}(R0/F); Rplus=F max_{v>=U}(R0/F).
-    All interior extrema of R0/F are included, not only sampled knots.
+    All interior extrema of R0/F are included, not only sampled kinks.
     """
 
     def __init__(self, policy="fixed", alpha=0.05, direction="lower"):
@@ -356,7 +387,7 @@ ax[0, 1].set_ylabel("Elasticity")
 ax[0, 1].axhline(19, color="gray", ls="--", lw=0.6)
 save(f, "M08-analytic-power")
 
-f, ax = frame(names=["Baseline", "Both, fixed knots", "Both, analytic"])
+f, ax = frame(names=["Baseline", "Both, fixed kinks", "Both, analytic"])
 for fn, c, s in zip(
     [lambda u: g["curve"](BASE, u), lambda u: g["curve"](sets["both"]["Raise only"], u), combined],
     [COL["Baseline"], COL["Raise only"], COL["Mixed"]],
@@ -372,7 +403,7 @@ ax[0, 0].set_ylabel("Borrow APR")
 ax[0, 1].set_ylabel("Protected supplier share")
 save(f, "M09-analytic-combined")
 
-# Sensitivity of the lower bound to an explicitly refined knot grid.
+# Sensitivity of the lower bound to an explicitly refined kink grid.
 refinements = [1, 2, 4, 8, 16, 32, 64]
 base_fresh = []
 base_both = []
@@ -509,7 +540,7 @@ pct(ax[0, 1])
 ax[0, 1].set(xlabel="Utilization at end of ramp", ylabel="Protected supplier share")
 save(f, "A04-smoothing-cost")
 audit["checks"] = (
-    "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-knot KKT and integer/rational checks also run."
+    "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-kink KKT and integer/rational checks also run."
 )
 (ROOT / "data/final-audit.json").write_text(json.dumps(audit, indent=2))
 print(json.dumps(audit, indent=2))

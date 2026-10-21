@@ -3,12 +3,12 @@ import SupplierMonotonicity.Model
 /-!
 # Repairs and several kinks
 
-Order-theoretic facts behind the repair constructions: combining protection profiles, knot-rate
+Order-theoretic facts behind the repair constructions: combining protection profiles, kink-rate
 caps for piecewise linear curves, the backward floor/raise and forward lower recursions, and the
 analytic greatest minorant and least majorant (paper, Sections 8 and 9, Appendix B).
 
 The recursions use finite positive real caps; an infinite cap is not encoded as division by
-infinity. Backward recursions are indexed from the top knot, so index `0` is the top.
+infinity. Backward recursions are indexed from the top kink, so index `0` is the top.
 
 Not covered here: continuity and regularity of the constructed curves, and the full
 rejoin/greatest-minorant theorem.
@@ -41,7 +41,7 @@ theorem max_profile_envelope (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     apply (div_le_div_iff₀ ha hb).mpr
     nlinarith
 
-/-! ### Knot-rate caps for a fixed share `K` -/
+/-! ### Kink-rate caps for a fixed share `K` -/
 
 theorem fixed_left_cap_iff (l d r s K : ℝ) (hl : 0 < l) (hr : 0 < r) :
     l * (s - r) ≤ K * r * d ↔ s / r ≤ 1 + K * d / l := by
@@ -68,7 +68,7 @@ theorem fixed_right_unbounded (h d r s K : ℝ) (hr : 0 ≤ r) (hs : 0 ≤ s) (h
 theorem fixed_left_zero (K r d : ℝ) (hK : 0 ≤ K) (hr : 0 ≤ r) (hd : 0 ≤ d) : (0 : ℝ) ≤ K * r * d :=
   mul_nonneg (mul_nonneg hK hr) hd
 
-/-! ### Recursions on knot rates -/
+/-! ### Recursions on kink rates -/
 
 /-- One backward step: a feasible rate `r` below `next` with ratio cap `c` satisfies
 `next / c ≤ r`. -/

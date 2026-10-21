@@ -3,13 +3,13 @@ import SupplierMonotonicity.MarginalIncome
 /-!
 # Finite deposits across kinks
 
-A finite deposit can cross knots where the rate curve has no derivative. These results glue the
+A finite deposit can cross kinks where the rate curve has no derivative. These results glue the
 smooth-segment sign condition across an arbitrary finite partition (paper, Sections 4 and 7).
-Income only needs to be continuous at the knots; no derivative is required there.
+Income only needs to be continuous at the kinks, and no derivative is required there.
 `withdrawal_raises_income` is the reverse: where `α (1 + η) > 1` throughout, withdrawing
 strictly raises income (paper, Sections 2 and 4).
 
-Not covered here: countably many knots, and the one-sided derivative at a knot.
+Not covered here: countably many kinks, and the one-sided derivative at a kink.
 -/
 
 namespace SupplierMonotonicity

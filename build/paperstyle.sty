@@ -96,12 +96,14 @@
 }{\end{list}}
 \makeatother
 
-\theoremstyle{plain}
+\newtheoremstyle{paperplain}{0.72\baselineskip}{0.72\baselineskip}{\itshape}{}{\bfseries}{.}{ }{}
+\newtheoremstyle{paperdefinition}{0.72\baselineskip}{0.72\baselineskip}{\normalfont}{}{\bfseries}{.}{ }{}
+\theoremstyle{paperplain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
-\theoremstyle{definition}
+\theoremstyle{paperdefinition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 

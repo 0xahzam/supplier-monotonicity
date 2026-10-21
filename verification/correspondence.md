@@ -43,7 +43,7 @@ not assumed in the final safe-share result.
 **FiniteDeposits.lean.** The segment mean-value argument, gluing over an arbitrary finite
 partition, ownership monotonicity, `finite_supplier_deposit` and `withdrawal_raises_income`. The last uses the actual income
 function, continuity on each closed piece and protection on each open piece. It does not prove
-a countably infinite knot-crossing extension or the one-sided derivative at a knot.
+a countably infinite kink-crossing extension or the one-sided derivative at a kink.
 
 **AdmissibleFamily.lean.** Profile/envelope equivalence, protection of every smaller share,
 the smooth implication from an envelope to an antitone normalized rate and its multiplicative
@@ -61,8 +61,8 @@ AC/essential-supremum claim. Real powers are connected to `exp(K log(u/O))` unde
 envelope `u/(1-u)`, hyperbolic boundary derivative and elasticity, and the piecewise linear
 segment and adjacent-ratio conditions. Boundary uniqueness needs the integrated-family argument.
 
-**Repairs.lean.** Envelope crossing and combination, knot-rate caps, and the floor, raise and
-lower recursions. The backward recurrence is indexed in reverse: index 0 is the top knot.
+**Repairs.lean.** Envelope crossing and combination, kink-rate caps, and the floor, raise and
+lower recursions. The backward recurrence is indexed in reverse: index 0 is the top kink.
 Optimality is proved inductively against any feasible competitor. The recursions use finite
 positive real caps; infinite caps are not encoded as division by infinity.
 `raise_step_feasible` proves the local feasibility step, not every global implementation detail.
@@ -99,7 +99,7 @@ formally assembled.
 - Positivity is required before cancelling rate or utilization factors.
 - A fixed borrowing parameter is not an endogenous borrowing path.
 - Integrability is stated in accumulated-income comparisons and FTC lemmas.
-- Positive, increasing knot coordinates and left rates are required by ratio forms.
+- Positive, increasing kink coordinates and left rates are required by ratio forms.
 - Nondecreasing rates give nonnegative derivatives only where the derivative
   exists. No proof uses a derivative at a kink.
 - Lean totalizes division, but physical conclusions retain explicit nonzero or

@@ -289,12 +289,26 @@ def main():
     best = (wS - 9) * wU * rate_at * 1000000
     record("Withdrawal: amount", (10 - wS) * 1000000, 302000, 100)
     record("Withdrawal: income", best, 188300, 50)
-    record("Withdrawal: income gain percent", (best / Q(159775) - 1) * 100, 18, 0.5)
-    record("Withdrawal: share of balance percent", (10 - wS) * 100, 30, 0.5)
     record("Withdrawal: utilization percent", wU * 100, 85.6, 0.05)
     record(
         "Withdrawal: alpha(1+eta) at optimum", (wS - 9) / wS * (1 + wU * Q(19, 4) / rate_at), 1, 0
     )
+    # Section 2 table: start, deposit to the kink, best withdrawal.
+    start_rate = Q(1, 20) + Q(19, 4) * Q(3, 100)
+    record("Table: start borrow rate percent", start_rate * 100, 19.25, 0)
+    record("Table: start supply rate percent", Q(83, 100) * start_rate * 100, 15.98, 0.005)
+    record("Table: start income", Q(1000000) * Q(83, 100) * start_rate, 159775, 0)
+    record("Table: deposit balance", Q(1000000) + 375000, 1375000, 0)
+    record("Table: deposit total supply", Q(8300000) / Q(4, 5), 10375000, 0)
+    record("Table: deposit supply rate percent", Q(4, 5) * Q(1, 20) * 100, 4, 0)
+    record("Table: withdrawal balance", (wS - 9) * 1000000, 698000, 100)
+    record("Table: withdrawal total supply", wS * 1000000, 9698000, 100)
+    record("Table: withdrawal borrow rate percent", rate_at * 100, 31.5, 0.05)
+    record("Table: withdrawal supply rate percent", wU * rate_at * 100, 27.0, 0.05)
+    # Section 4: the condition at the starting state of Section 2.
+    eta0 = Q(83, 100) * Q(19, 4) / start_rate
+    record("Failure: elasticity at start", eta0, 20.5, 0.05, note="3.9425/0.1925")
+    record("Failure: alpha(1+eta) at start", Q(1, 10) * (1 + eta0), 2.15, 0.005)
     record("Single kink: elasticity at foot", Q(4, 5) * Q(19, 4) / Q(1, 20), 76, 0)
     record("Single kink: elasticity at full utilization", Q(19, 4), 4.75, 0)
     record("Envelope crossing utilization percent", Q(19, 20) * 100, 95, 0)

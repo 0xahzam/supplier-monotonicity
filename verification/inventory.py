@@ -36,119 +36,119 @@ COVERAGE = {
         "Locally absolutely continuous / a.e. admissible-family theorem not formalized.",
     ),
     14: (
-        "supported",
-        "reconstructedRate_* proves positive C1 construction for continuous log-coordinate elasticity; reconstructed_utilization_elasticity gives eta. General local-profile extension, change of variables and full converse pending.",
-    ),
-    15: (
         "definition",
         "Fixed protection target definition; envelope_iff gives its pointwise consequence.",
     ),
-    16: (
+    15: (
         "proved",
         "power_boundary_derivative, power_boundary_elasticity, power_exp_matches_rpow.",
     ),
-    17: (
+    16: (
         "supported",
         "log_rate_integral_on proves smooth-interior log-rate FTC with integrability; full AC regularity remains open.",
     ),
-    18: (
+    17: (
         "supported",
         "smooth_endpoint_bound and power_hits_top; AC essential-supremum version remains open.",
     ),
-    19: (
+    18: (
         "supported",
         "safe_share_iff plus endpoint bound in smooth subclass; general endpoint theorem pending.",
     ),
-    20: (
+    19: (
         "definition",
         "Initial/final utilization; nonzero denominators made explicit.",
     ),
-    21: ("proved", "fresh_share."),
-    22: ("proved", "fresh_path_iff."),
-    23: (
+    20: ("proved", "fresh_share."),
+    21: ("proved", "fresh_path_iff."),
+    22: (
         "supported",
         "fresh_all_starts_iff and fresh_share; explicit realization of every worst-case state not separately encoded.",
     ),
-    24: ("proved", "fresh_envelope and fresh_envelope_iff."),
-    25: (
+    23: ("proved", "fresh_envelope and fresh_envelope_iff."),
+    24: (
         "supported",
         "hyperbolic_boundary_derivative and hyperbolic_boundary_elasticity; integrated uniqueness pending.",
     ),
-    26: (
+    25: (
         "supported",
         "fresh_base_positive checks consequence of bound; normalized_base_bound checks antitone endpoint step. Full limit argument pending.",
     ),
-    27: ("definition", "Slope between distinct knots."),
-    28: (
+    26: ("definition", "Slope between distinct kinks."),
+    27: (
         "proved",
-        "fresh_linear_segment_iff and adjacent_fresh_ratio_iff; positive left rate and increasing knots.",
+        "fresh_linear_segment_iff and adjacent_fresh_ratio_iff; positive left rate and increasing kinks.",
     ),
-    29: ("definition", "Single-kink baseline; numerical endpoints checked."),
-    30: (
+    28: ("definition", "Single-kink baseline; numerical endpoints checked."),
+    29: (
         "supported",
         "Exact rational sign bracket for quoted K=19 root; general root existence/uniqueness pending.",
     ),
-    31: (
+    30: (
         "supported",
         "Power branch elasticity and endpoint checks proved; full rejoin/greatest-minorant theorem pending.",
     ),
-    32: (
+    31: (
         "open",
         "Informal eventual-equality limit claim; threshold and full piecewise construction not formalized.",
     ),
-    33: ("proved", "max_profile_envelope and combined_envelope; positive profiles."),
-    34: (
+    32: ("proved", "max_profile_envelope and combined_envelope; positive profiles."),
+    33: (
         "supported",
         "raise_recursion_minimal and raise_step_feasible; reverse indexing explicit; finite caps.",
     ),
-    35: ("definition", "Accumulated interest for integrable prescribed histories."),
-    36: (
+    34: ("definition", "Accumulated interest for integrable prescribed histories."),
+    35: (
         "proved",
         "accumulated_interest_difference and supplier_transfer; integrability explicit.",
     ),
-    37: (
+    36: (
         "definition",
         "Affine rate and elasticity substitution; endpoint theorem below.",
     ),
-    38: (
+    37: (
         "proved",
         "integer_endpoint_iff; fixed_linear_endpoint_suffices; continuous arithmetic, not rounded transactions.",
     ),
-    39: (
+    38: (
         "proved",
         "fresh_boundary_income_algebra together with Core derivative and fresh share.",
     ),
-    40: ("proved", "Duplicate of D033."),
-    41: ("proved", "adjacent_fresh_ratio_iff."),
-    42: (
+    39: ("proved", "Duplicate of D032."),
+    40: ("proved", "adjacent_fresh_ratio_iff."),
+    41: (
         "proved",
         "fixed_left_cap_iff, fixed_right_cap_iff, fixed_right_unbounded, fixed_left_zero, combined_envelope.",
     ),
-    43: (
+    42: (
         "supported",
         "floor_recursion_minimal; unbounded-cap limit handled numerically, not encoded in recursion theorem.",
     ),
-    44: ("supported", "raise_recursion_minimal and raise_step_feasible."),
-    45: (
+    43: ("supported", "raise_recursion_minimal and raise_step_feasible."),
+    44: (
         "supported",
         "lower_recursion_maximal; complete constructed-curve feasibility not yet assembled.",
     ),
-    46: (
+    45: (
         "scope qualification",
         "Normalized derivative equivalence, smooth antitonicity, running-infimum antitonicity and order bounds proved. The paper now assumes positive base rate; zero_base_flat_minorant explains why an unrestricted assertion is false. Continuity/regularity still pending.",
     ),
-    47: (
+    46: (
         "supported",
         "Power and hyperbolic branches checked separately; combined join, regularity and general K>0 domain not assembled.",
     ),
-    48: (
+    47: (
         "supported",
         "normalized_base_bound plus exact numerical check for K=19; general combined construction attainment pending.",
     ),
-    49: ("proved", "Duplicate of D010."),
+    48: ("proved", "Duplicate of D010."),
+    49: (
+        "supported",
+        "reconstructedRate_* proves positive C1 construction for continuous log-coordinate elasticity; reconstructed_utilization_elasticity gives eta. General local-profile extension, change of variables and full converse pending.",
+    ),
     50: (
         "supported",
-        "Duplicate of D014; log-coordinate construction proved, full local-profile formulation pending.",
+        "Duplicate of D049; log-coordinate construction proved, full local-profile formulation pending.",
     ),
     51: (
         "proved",

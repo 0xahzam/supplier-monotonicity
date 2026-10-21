@@ -38,7 +38,7 @@ market = Market(
 pts = breakpoints(market)
 U = np.array([float(u) / 1e6 for u, r in pts])
 BASE = np.array([float(r) / 1e6 for u, r in pts])
-# Include the analytical floor crossing as a fixed knot for every comparison.
+# Include the analytical floor crossing as a fixed kink for every comparison.
 W = np.r_[np.diff(U)[0] / 2, (U[2:] - U[:-2]) / 2, np.diff(U)[-1] / 2]
 FEE = params["carveout_factor"] / 1e6
 LENDER = 1 - FEE  # any additional fee beyond this carveout is assumed zero
@@ -71,7 +71,7 @@ def caps(policy, alpha=0.05):
 
 
 def mixed_projection(cap):
-    """Unique weighted least-squares projection of knot APRs onto constraints.
+    """Unique weighted least-squares projection of kink APRs onto constraints.
 
     Objective sum_i W_i (r_i-baseline_i)^2, trapezoidal node weights W.
     Dykstra's algorithm for Euclidean projection after diagonal rescaling.
@@ -314,7 +314,7 @@ axes[0, 1].xaxis.set_major_formatter(PercentFormatter(1, decimals=1))
 save(
     f,
     "01-usdt-baseline",
-    "USDT borrow-rate configuration, drawn from a deployed configuration. (a) Full range, including the 0.5% floor and 80% kink. (b) Detail near the final knots. Markers show analytical breakpoints. The 99–99.5% interval accounts for 21.1875 percentage points of borrow APR. The parameters are not live market data.",
+    "USDT borrow-rate configuration, drawn from a deployed configuration. (a) Full range, including the 0.5% floor and 80% kink. (b) Detail near the final kinks. Markers show analytical breakpoints. The 99–99.5% interval accounts for 21.1875 percentage points of borrow APR. The parameters are not live market data.",
 )
 
 f, axes = figgrid(rows=2, cols=3)
@@ -335,7 +335,7 @@ for col, policy in enumerate(sets):
 save(
     f,
     "02-floor-and-repairs",
-    "Baseline, minimum-rate compliant floor, least pointwise raise-only repair, and mixed repair under three guarantees. All preserve the analytical knot positions and 90% top APR. The floor is a lower bound conditional on these choices; it is not a recommended pricing curve. The mixed repair minimizes a trapezoid-weighted sum of squared changes to knot APRs. Top row: full range. Bottom row: high-utilization detail. Fixed-share and combined guarantees use a 5% share target. Under both constraints the floor lies everywhere above baseline, so all three repairs coincide; the overlapping lines are not three independent outcomes.",
+    "Baseline, minimum-rate compliant floor, least pointwise raise-only repair, and mixed repair under three guarantees. All preserve the analytical kink positions and 90% top APR. The floor is a lower bound conditional on these choices; it is not a recommended pricing curve. The mixed repair minimizes a trapezoid-weighted sum of squared changes to kink APRs. Top row: full range. Bottom row: high-utilization detail. Fixed-share and combined guarantees use a 5% share target. Under both constraints the floor lies everywhere above baseline, so all three repairs coincide; the overlapping lines are not three independent outcomes.",
 )
 
 f, axes = figgrid(names=["Baseline", "Raise only", "Lower only"])
@@ -358,7 +358,7 @@ axes[0, 1].set_ylabel("Borrow APR")
 save(
     f,
     "03-direction-of-repair",
-    "Both constraints, at a 5% fixed-share target. (a) Changes relative to baseline. (b) Resulting rate curves. Raise-only retains the 90% top APR and equals the floor and mixed repair in this case. Lower-only is the greatest compliant curve nowhere above baseline, preserving its 0.5% base; it must abandon the 90% top APR. Keeping both that base and top is infeasible for these knots and constraints. All are continuous piecewise-linear illustrations, not integer parameter updates.",
+    "Both constraints, at a 5% fixed-share target. (a) Changes relative to baseline. (b) Resulting rate curves. Raise-only retains the 90% top APR and equals the floor and mixed repair in this case. Lower-only is the greatest compliant curve nowhere above baseline, preserving its 0.5% base; it must abandon the 90% top APR. Keeping both that base and top is infeasible for these kinks and constraints. All are continuous piecewise-linear illustrations, not integer parameter updates.",
 )
 
 f, axes = figgrid(
@@ -379,7 +379,7 @@ axes[0, 1].axhline(0, color="gray", lw=0.5)
 save(
     f,
     "04-protection-and-marginal-income",
-    "Both constraints. (a) Actual local protected share, 1/(1+η), with the 5% target marked. (b) Marginal whole-position supplier income for a fresh depositor entering a pool with 1m USDT supply and 990k USDT borrowing. Borrowing remains fixed. Income includes the assumed 5% carveout. The baseline can have negative marginal income; all three repairs satisfy the fresh-depositor condition. At knots the plotted value uses the derivative from lower utilization, the direction entered by a deposit.",
+    "Both constraints. (a) Actual local protected share, 1/(1+η), with the 5% target marked. (b) Marginal whole-position supplier income for a fresh depositor entering a pool with 1m USDT supply and 990k USDT borrowing. Borrowing remains fixed. Income includes the assumed 5% reserve factor. The baseline can have negative marginal income; all three repairs satisfy the fresh-depositor condition. At kinks the plotted value uses the derivative from lower utilization, the direction entered by a deposit.",
 )
 
 
@@ -440,7 +440,7 @@ for row, kind in enumerate(["market", "topups"]):
 save(
     f,
     "05-lifecycle-comparison",
-    "Both constraints; identical histories under all pricing choices. (a,b) A 10k USDT depositor holds for one year while utilization moves through 80%, 95%, 99.5%, 85%, 80% on days 0, 90, 180, 270, 365. Pool supply is 1m USDT. (c,d) A 10k depositor adds 20k on days 60, 120, 180, 240, 300 into an initial 1m pool with fixed 990k borrowing. Left: accumulated supplier interest. Right: difference from baseline. Interest is paid out rather than compounded; 5% carveout assumed. These histories do not model demand response. Numerical integration uses 0.1-day steps, checked at 0.05-day steps.",
+    "Both constraints; identical histories under all pricing choices. (a,b) A 10k USDT depositor holds for one year while utilization moves through 80%, 95%, 99.5%, 85%, 80% on days 0, 90, 180, 270, 365. Pool supply is 1m USDT. (c,d) A 10k depositor adds 20k on days 60, 120, 180, 240, 300 into an initial 1m pool with fixed 990k borrowing. Left: accumulated supplier interest. Right: difference from baseline. Interest is paid out rather than compounded; 5% reserve factor assumed. These histories do not model demand response. Numerical integration uses 0.1-day steps, checked at 0.05-day steps.",
 )
 
 f, axes = figgrid(names=["Floor", "Raise only", "Mixed"])
@@ -466,7 +466,7 @@ axes[0, 1].set_ylabel("Pool borrower interest change (USDT)")
 save(
     f,
     "06-protection-cost",
-    "Both constraints as the fixed-share target varies. Each point recalculates the repair, keeping knot positions and 90% maximum APR. Changes use the deposit-once history in Figure 5(a,b). Left: annual interest difference for a 10k supplier. Right: total interest difference paid by all borrowers in the 1m-supply pool. Under this fixed 1% ownership and 5% carveout, supplier change is exactly 0.0095 times pool borrower change: protection does not create interest revenue. The mixed objective minimizes knot-rate changes, not lifecycle cost; its outcome depends on the stated market history.",
+    "Both constraints as the fixed-share target varies. Each point recalculates the repair, keeping kink positions and 90% maximum APR. Changes use the deposit-once history in Figure 5(a,b). Left: annual interest difference for a 10k supplier. Right: total interest difference paid by all borrowers in the 1m-supply pool. Under this fixed 1% ownership and 5% reserve factor, supplier change is exactly 0.0095 times pool borrower change: protection does not create interest revenue. The mixed objective minimizes kink-rate changes, not lifecycle cost; its outcome depends on the stated market history.",
 )
 
 # Fresh-only permits distinct floors and repairs; expose the pricing choice directly.

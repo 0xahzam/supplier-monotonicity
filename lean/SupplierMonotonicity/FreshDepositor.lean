@@ -99,7 +99,7 @@ theorem fresh_linear_segment_iff (l h r m : ℝ) (hlh : l ≤ h) (hm : 0 ≤ m) 
   · intro hb u hu
     nlinarith [mul_nonneg hm (sub_nonneg.mpr hu.1)]
 
-/-- The segment condition as a cap on the ratio of adjacent knot rates `s / r`. -/
+/-- The segment condition as a cap on the ratio of adjacent kink rates `s / r`. -/
 theorem adjacent_fresh_ratio_iff (l h r s : ℝ) (hlh : l < h) (hl : l < 1) (hr : 0 < r) :
     ((s - r) / (h - l)) * (1 - l) ≤ r ↔ s / r ≤ 1 + (h - l) / (1 - l) := by
   have hd : 0 < h - l := sub_pos.mpr hlh
