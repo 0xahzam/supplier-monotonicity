@@ -100,8 +100,8 @@ def main():
     figures = re.findall(
         r"\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}", (ROOT / "build/main.tex").read_text()
     )
-    if len(figures) != 20 or any(not (ROOT / "figures" / name).is_file() for name in figures):
-        raise RuntimeError("Paper figure inventory does not match 20 generated figures")
+    if len(figures) != 21 or any(not (ROOT / "figures" / name).is_file() for name in figures):
+        raise RuntimeError("Paper figure inventory does not match 21 generated figures")
     if before != {str(p.relative_to(ROOT)): sha256(p) for p in inputs}:
         raise RuntimeError("Release sources changed during reproduction")
     proof = json.loads((EVIDENCE / "verification.json").read_text())
@@ -123,7 +123,7 @@ def main():
         "output_sha256": {
             str(p.relative_to(ROOT)): sha256(p)
             for p in [
-                *sorted((ROOT / "analysis/data").glob("*")),
+                *sorted(f for f in (ROOT / "analysis/data").rglob("*") if f.is_file()),
                 *sorted((ROOT / "figures").glob("*.pdf")),
                 ROOT / "verification/evidence/verification.json",
             ]
@@ -131,7 +131,7 @@ def main():
     }
     (EVIDENCE / "release.json").write_text(json.dumps(status, indent=2) + "\n")
     print(
-        f"PASS: {status['python_tests']}; {status['lean_theorems']} Lean theorems; 20 figures; paper.pdf rebuilt."
+        f"PASS: {status['python_tests']}; {status['lean_theorems']} Lean theorems; 21 figures; paper.pdf rebuilt."
     )
 
 

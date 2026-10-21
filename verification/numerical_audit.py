@@ -488,6 +488,41 @@ def main():
         0.5,
     )
     record("Borrower-to-supplier incremental transfer", Q(1, 100) * Q(19, 20), 0.0095, 0)
+    # Drift evidence: the analysis output, compared with the numbers the paper prints.
+    # These check transcription, not the analysis itself, which tests/test_drift.py covers.
+    drift = json.loads((ROOT.parent / "analysis/data/drift/summary.json").read_text())
+    note = "analysis/data/drift/summary.json; transcription check"
+    # (field, printed value per market, tolerance in percentage points)
+    for name, printed, tol in [
+        ("market.above_kink", {"SOL": 5.4, "USDC": 36.6}, 0.05),
+        ("market.safe_below_5", {"SOL": 0.3, "USDC": 3.0}, 0.05),
+        ("market.median_safe_above_kink", {"SOL": 9.9, "USDC": 8.4}, 0.05),
+        ("suppliers.above_kink", {"SOL": 12.4, "USDC": 26.0}, 0.05),
+        ("suppliers.exposed_hours_lender", {"SOL": 11.4, "USDC": 7.9}, 0.05),
+        ("suppliers.exposed_hours_any", {"SOL": 11.4, "USDC": 11.6}, 0.05),
+        ("suppliers.coverage_median", {"SOL": 57, "USDC": 62}, 0.5),
+        ("suppliers.continuity_exact_all", {"SOL": 99.5, "USDC": 95}, 0.05),
+        ("suppliers.continuity_exact_lenders", {"SOL": 99.7, "USDC": 100}, 0.05),
+    ]:
+        part, key = name.split(".")
+        for market, value in printed.items():
+            computed = Q(str(drift[market][part][key])) * 100
+            record(f"Drift {market}: {name} percent", computed, value, tol, note)
+    for market, printed, tol in [("SOL", (219, 20), 0.5), ("USDC", (230, 11.5), 0.05)]:
+        lender = max(
+            (e for e in drift[market]["suppliers"]["exposed_suppliers"] if not e["perp_trader"]),
+            key=lambda e: e["hours"],
+        )
+        record(
+            f"Drift {market}: longest exposed lender hours", Q(lender["hours"]), printed[0], 0, note
+        )
+        record(
+            f"Drift {market}: longest exposed lender peak share while exposed percent",
+            Q(str(lender["max_share_exposed"])) * 100,
+            printed[1],
+            tol,
+            note,
+        )
     output = {
         "scope": "Independent rational numerical audit; not Lean-certified. Table comparison tolerances represent last printed digit unless noted. Exact integrals replace time stepping. KKT candidates seeded from CSV, then certified exactly.",
         "checks": results,

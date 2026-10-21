@@ -199,7 +199,7 @@ for a, lim in zip(ax[0], [(0, 1), (0.94, 1)]):
     pct(a)
     a.set(xlim=lim, ylabel="Borrow APR")
 save(f, "T04-piecewise-example")
-f, ax = frame(names=["Standard kink", "Table 2 curve", "Fresh boundary"])
+f, ax = frame(names=["Standard kink", "Example curve", "Fresh boundary"])
 x = np.linspace(0, 9.99e6 / 0.85 - 1e7, 3000)
 for fn, c, s in zip(
     [single, table, boundary], [COL["Baseline"], COL["Raise only"], COL["Mixed"]], ["-", "--", ":"]
@@ -230,7 +230,6 @@ for new, c, s in zip([False, True], [COL["Baseline"], COL["Raise only"]], ["-", 
 ax[0, 0].set(xlabel="Additional deposit (USD thousands)", ylabel="Income change per USD (per year)")
 ax[0, 0].axhline(0, color="gray", lw=0.6)
 save(f, "T07-single-income")
-
 
 
 class AnalyticRepair:
@@ -512,6 +511,42 @@ pct(ax[0, 1])
 ax[0, 1].yaxis.set_major_formatter(PercentFormatter(1, decimals=1))
 ax[0, 1].set(xlabel="Utilization at end of ramp", ylabel="Protected supplier share")
 save(f, "A04-smoothing-cost")
+
+# Exposure on two Drift spot markets, rebuilt from the pseudonymized snapshot in data/drift.
+from supplier_monotonicity.drift import run as drift_run
+
+drift = drift_run(ROOT / "data/drift")
+f, ax = frame(names=["Largest lender share", "Protected share", "Utilization"])
+for a, name in zip(ax[0], ["SOL", "USDC"]):
+    s = drift[name]["suppliers"]["series"]
+    days = (np.array(s["hour"]) - s["hour"][0]) / 86400
+    for key, c, ls in zip(
+        ["largest_lender_share", "alpha_safe", "utilization"],
+        [COL["Baseline"], COL["Raise only"], COL["Mixed"]],
+        ["-", "--", ":"],
+    ):
+        a.plot(days, s[key], color=c, ls=ls, lw=0.8)
+    exposed = np.array(s["largest_lender_share"]) > np.array(s["alpha_safe"])
+    a.fill_between(days, 0, 1, where=exposed, color=COL["Raise only"], alpha=0.15, lw=0)
+    a.yaxis.set_major_formatter(PercentFormatter(1, decimals=0))
+    a.set(
+        xlabel="Days from 1 December 2025",
+        ylabel=f"{name} market",
+        ylim=(0, 1),
+        xlim=(0, days[-1]),
+    )
+save(f, "08-drift-evidence")
+(ROOT / "data/drift/summary.json").write_text(
+    json.dumps(
+        {
+            name: {k: v for k, v in part.items() if k != "suppliers"}
+            | {"suppliers": {k: v for k, v in part["suppliers"].items() if k != "series"}}
+            for name, part in drift.items()
+        },
+        indent=2,
+    )
+    + "\n"
+)
 audit["checks"] = (
     "Analytic repairs: exact extrema construction, dense independent running-envelope comparison, elasticity bounds, direction of rate changes, finite protected deposit paths. Existing fixed-kink KKT and integer/rational checks also run."
 )

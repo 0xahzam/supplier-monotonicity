@@ -139,3 +139,9 @@
 \setlength{\floatsep}{10pt plus 2pt minus 2pt}
 \setlength{\textfloatsep}{14pt plus 2pt minus 4pt}
 \setlength{\intextsep}{10pt plus 2pt minus 2pt}
+
+% References in small type with a small gap between entries, as in most papers.
+\AtBeginEnvironment{thebibliography}{\small\setlength{\parskip}{2pt plus 1pt}}
+\makeatletter
+\apptocmd{\thebibliography}{\setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}}{}{}
+\makeatother

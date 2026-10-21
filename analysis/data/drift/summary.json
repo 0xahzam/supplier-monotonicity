@@ -1,0 +1,178 @@
+{
+  "SOL": {
+    "fit": {
+      "above_kink": 0.006369408125958689,
+      "below_kink": 0.0015127743623656502,
+      "hours_above": 482
+    },
+    "market": {
+      "start": 1731362400,
+      "end": 1775066400,
+      "hours": 12141,
+      "above_kink": 0.05353759986821514,
+      "safe_below_5": 0.0027180627625401532,
+      "safe_below_1": 0.0,
+      "median_safe_above_kink": 0.09936985653762227
+    },
+    "market_window": {
+      "start": 1764547200,
+      "end": 1775066400,
+      "hours": 2923,
+      "above_kink": 0.12384536435169347,
+      "safe_below_5": 0.0010263427984946972,
+      "safe_below_1": 0.0,
+      "median_safe_above_kink": 0.10327282601954961
+    },
+    "suppliers": {
+      "start": 1764547200,
+      "end": 1775066400,
+      "hours": 2923,
+      "above_kink": 0.12384536435169347,
+      "coverage_median": 0.5653602447528219,
+      "coverage_p5": 0.5083505354363759,
+      "coverage_p95": 0.8623316502481063,
+      "continuity_exact_all": 0.9952305246422893,
+      "continuity_exact_lenders": 0.9967637540453075,
+      "exposed_hours_any": 0.11358193636674649,
+      "exposed_hours_lender": 0.11358193636674649,
+      "exposed_suppliers": [
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.05306113723533986,
+          "max_share_exposed": 0.05298531680213296
+        },
+        {
+          "perp_trader": false,
+          "hours": 219,
+          "max_share": 0.20164891208597568,
+          "max_share_exposed": 0.20164891208597568
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.048251668843880165,
+          "max_share_exposed": 0.044121031449629075
+        },
+        {
+          "perp_trader": false,
+          "hours": 3,
+          "max_share": 0.03607119181730601,
+          "max_share_exposed": 0.02710394134406659
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.05462893334127367,
+          "max_share_exposed": 0.04132081446038342
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.02478008022897235,
+          "max_share_exposed": 0.02207032979472912
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.04651925943743046,
+          "max_share_exposed": 0.036527265619133595
+        },
+        {
+          "perp_trader": false,
+          "hours": 176,
+          "max_share": 0.11863952012045699,
+          "max_share_exposed": 0.11731007391052886
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.05914262251326325,
+          "max_share_exposed": 0.046439223411537715
+        }
+      ]
+    }
+  },
+  "USDC": {
+    "fit": {
+      "above_kink": 0.006935947383384731,
+      "below_kink": 0.004712010081618365,
+      "hours_above": 3907
+    },
+    "market": {
+      "start": 1731362400,
+      "end": 1775066400,
+      "hours": 12141,
+      "above_kink": 0.3655382587925212,
+      "safe_below_5": 0.029569228234906514,
+      "safe_below_1": 0.0,
+      "median_safe_above_kink": 0.08419509888969405
+    },
+    "market_window": {
+      "start": 1764547200,
+      "end": 1775066400,
+      "hours": 2923,
+      "above_kink": 0.2603489565514882,
+      "safe_below_5": 0.0010263427984946972,
+      "safe_below_1": 0.0,
+      "median_safe_above_kink": 0.08982396323394543
+    },
+    "suppliers": {
+      "start": 1764547200,
+      "end": 1775066400,
+      "hours": 2923,
+      "above_kink": 0.2603489565514882,
+      "coverage_median": 0.618022805502115,
+      "coverage_p5": 0.5059204789466729,
+      "coverage_p95": 0.7588358643217816,
+      "continuity_exact_all": 0.9503666102650874,
+      "continuity_exact_lenders": 1.0,
+      "exposed_hours_any": 0.11631885049606569,
+      "exposed_hours_lender": 0.07937050975025658,
+      "exposed_suppliers": [
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.03530177473443571,
+          "max_share_exposed": 0.031963242822140955
+        },
+        {
+          "perp_trader": true,
+          "hours": 337,
+          "max_share": 0.20698364141791967,
+          "max_share_exposed": 0.20698364141791967
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.03852331294226739,
+          "max_share_exposed": 0.021683621477750537
+        },
+        {
+          "perp_trader": false,
+          "hours": 2,
+          "max_share": 0.05643209879576792,
+          "max_share_exposed": 0.040357177365905536
+        },
+        {
+          "perp_trader": false,
+          "hours": 230,
+          "max_share": 0.14141995981594127,
+          "max_share_exposed": 0.11474407696896284
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.03692763829864629,
+          "max_share_exposed": 0.032272426644475244
+        },
+        {
+          "perp_trader": true,
+          "hours": 3,
+          "max_share": 0.044360284085934676,
+          "max_share_exposed": 0.040462835425840706
+        }
+      ]
+    }
+  }
+}

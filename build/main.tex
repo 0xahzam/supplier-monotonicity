@@ -20,7 +20,7 @@ Ahzam Khan & Cavey Cool \\
 \maketitle
 
 \begin{abstract}
-In utilization dependent interest rate models, adding liquidity can reduce a supplier's total interest income even as the supplier's balance increases. A supplier holding a fraction $\alpha$ of final pool supply keeps income nondecreasing with a marginal deposit exactly when $\alpha(1+\eta)\leq1$, where $\eta$ is the elasticity of the borrow rate with respect to utilization. When the condition fails, the supplier can instead raise its income by withdrawing, which pushes utilization further up. A protocol turns this into a design constraint by choosing, at each utilization, the largest supplier share it intends to protect. That choice caps the elasticity, and integrating the cap describes every admissible curve. Protecting the same share at every utilization gives a power law boundary, and protecting every fresh depositor gives a hyperbolic one. On a multiple kink USDT market, compliant repairs can lower or raise supplier income, because the constraint governs how income responds to a deposit and not the price level.
+In utilization dependent interest rate models, adding liquidity can reduce a supplier's total interest income even as the supplier's balance increases. A supplier holding a fraction $\alpha$ of final pool supply keeps income nondecreasing with a marginal deposit exactly when $\alpha(1+\eta)\leq1$, where $\eta$ is the elasticity of the borrow rate with respect to utilization. When the condition fails, the supplier can instead raise its income by withdrawing, which pushes utilization further up. On two public Drift markets, a lender held more of the pool than the curve protected in at least one hour in nine on SOL and one in thirteen on USDC. A protocol turns this into a design constraint by choosing, at each utilization, the largest supplier share it intends to protect. That choice caps the elasticity, and integrating the cap describes every admissible curve. Protecting the same share at every utilization gives a power law boundary, and protecting every fresh depositor gives a hyperbolic one. On a multiple kink USDT market, compliant repairs can lower or raise supplier income, because the constraint governs how income responds to a deposit and not the price level.
 \end{abstract}
 
 \section{Introduction}
@@ -31,7 +31,7 @@ Consequently, a supplier may be better off withholding capital, or withdrawing i
 
 Existing work compares the rate rules of deployed protocols~\cite{gudgeon}, models lending pools formally~\cite{bartoletti}, and designs rates for expected lender wealth~\cite{baude-optimal} or stable utilization~\cite{agilerate}, always treating lenders as a group or the pool as a whole. Closest to the question here, Baude et al.~\cite{baude-leverage} account for the effect of a borrower's own position size on its borrowing cost. We study the corresponding question for a single supplier.
 
-This paper gives an exact condition under which a deposit cannot lower the supplier's own income, describes the rate curves that satisfy it, and separates what such a guarantee promises from what it costs. Section~\ref{sec:failure} works the failure through in numbers. Sections~\ref{sec:model}--\ref{sec:family} derive the income condition and the admissible family of rate curves it induces. Sections~\ref{sec:fixed} and \ref{sec:fresh} develop two protection guarantees, and Section~\ref{sec:minimal} gives a power law repair. Section~\ref{sec:multi} takes a market with several kinks and separates protection from pricing, and Section~\ref{sec:onchain} states the check a protocol would implement. The appendices hold the detailed constructions, further examples and the smooth extension.
+This paper gives an exact condition under which a deposit cannot lower the supplier's own income, describes the rate curves that satisfy it, and separates what such a guarantee promises from what it costs. Section~\ref{sec:failure} works the failure through in numbers. Sections~\ref{sec:model} and \ref{sec:condition} derive the income condition, Section~\ref{sec:evidence} shows that real suppliers on two Drift markets were exposed to it, and Section~\ref{sec:family} describes the admissible family of rate curves it induces. Sections~\ref{sec:fixed} and \ref{sec:fresh} develop two protection guarantees, and Section~\ref{sec:minimal} gives a power law repair. Section~\ref{sec:multi} takes a market with several kinks and separates protection from pricing, and Section~\ref{sec:onchain} states the check a protocol would implement. The appendices hold the detailed constructions, further examples and the smooth extension.
 
 Most of the results are formalized in Lean~4. The Lean library, the analysis code and its data are available at \url{https://github.com/0xahzam/supplier-monotonicity}, with a record of which statements are covered.
 
@@ -166,7 +166,7 @@ A finite deposit is a chain of marginal ones. If the condition holds at every po
 
 The condition also explains both features of Section~\ref{sec:failure}. Above the kink the slope is $m=(R_{\max}-R_o)/(1-O)=4.75$, and on a straight segment $R_b'=m$. At the starting utilization of $83\%$ the borrow rate is $19.25\%$, so $\eta=0.83\times4.75/0.1925\approx20.5$ and $\alpha(1+\eta)\approx0.1\times21.5\approx2.15$. That is more than twice the limit, so the deposit loses money, as Section~\ref{sec:failure} found. On the steep branch elasticity is $Um/(R_o+m(U-O))$. It is largest just above the kink, where the rate is lowest. There $\eta=Om/R_o=76$, so only suppliers below $1/77\approx1.3\%$ of the pool are protected. At full utilization it falls to $m/R_{\max}=4.75$, because the same slope moves a high rate by a smaller percentage. The steep branch is therefore most dangerous at its foot rather than its top. Below the kink this curve has $\eta=1$, so the condition holds again for any share up to one half and income starts to rise. That is why the income trough in Figure~\ref{fig:failure-mode} sits exactly at the kink.
 
-Read in the other direction, the same condition prices a withdrawal. Wherever $\alpha(1+\eta)>1$ the derivative in Equation~\ref{eq:marginal} is negative, so removing liquidity raises the supplier's income. Withdrawing lowers the supplier's share and raises utilization, which on the steep branch lowers elasticity, so $\alpha(1+\eta)$ falls until income peaks where it reaches $1$. In Section~\ref{sec:failure} this is the withdrawal of about \$302{,}000, at which $\alpha(1+\eta)=1$ exactly. So the supplier the pool most needs earns more by leaving, and leaving pushes utilization further above $O$.
+Read in the other direction, the same condition prices a withdrawal. Wherever $\alpha(1+\eta)>1$ the derivative in Equation~\ref{eq:marginal} is negative, so removing liquidity raises the supplier's income. Withdrawing lowers the supplier's share and raises utilization, which on the steep branch lowers elasticity, so $\alpha(1+\eta)$ falls until income peaks where it reaches $1$. In Section~\ref{sec:failure} this is the withdrawal of about \$302{,}000, at which $\alpha(1+\eta)=1$ exactly. So the supplier the pool most needs earns more by leaving, and leaving pushes utilization further above $O$. A withdrawal can draw only on liquidity that is not lent out, so it can never push utilization above $1$. In the Section~\ref{sec:failure} example, about \$1.7 million was unlent.
 
 In the limit of a supplier that owns the whole pool, $\alpha=1$ and the condition requires $\eta\leq0$. Equation~\ref{eq:marginal} then becomes
 \begin{equation}
@@ -174,7 +174,51 @@ In the limit of a supplier that owns the whole pool, $\alpha=1$ and the conditio
 \end{equation}
 so no strictly increasing rate curve protects a sole supplier, and only a flat rate keeps its income unchanged.
 
-The condition is the marginal revenue condition for a seller with market power~\cite{cournot,lerner}. Liquidity is the good and the supply rate is its price. Since $R_s=BR_b(B/T)/T$, adding one percent to total supply lowers the supply rate by about $1+\eta$ percent, and Equation~\ref{eq:marginal} reads $dI/d\delta=R_s[1-\alpha(1+\eta)]$, the marginal revenue of a seller holding the share $\alpha$ of that market. Withdrawing when the bracket is negative is the matching withholding of output, and the sole supplier above is the monopolist. What differs here is that the protocol sets the demand curve itself, so it can choose the elasticity that removes this incentive for every supplier below a chosen share. That is the subject of the next section.
+The condition is the marginal revenue condition for a seller with market power~\cite{cournot,lerner}. Liquidity is the good and the supply rate is its price. Since $R_s=BR_b(B/T)/T$, adding one percent to total supply lowers the supply rate by about $1+\eta$ percent, and Equation~\ref{eq:marginal} reads $dI/d\delta=R_s[1-\alpha(1+\eta)]$, the marginal revenue of a seller holding the share $\alpha$ of that market. Withdrawing when the bracket is negative is the matching withholding of output, and the sole supplier above is the monopolist. What differs here is that the protocol sets the demand curve itself, so it can choose the elasticity that removes this incentive for every supplier below a chosen share. Sections~\ref{sec:family} to \ref{sec:multi} develop this.
+
+\section{Evidence from Drift Markets}
+\label{sec:evidence}
+
+To see whether real suppliers end up in the position of Section~\ref{sec:failure}, we check, hour by hour, whether any supplier on a live market held a larger share of the pool than the curve protected, that is, whether its share exceeded $\alpha_{\mathrm{safe}}$. We call such a supplier \emph{exposed}, since by Equation~\ref{eq:marginal} depositing more would have lowered its own income.
+
+We use the USDC and SOL lending markets of Drift~\cite{drift}, a trading and lending protocol on Solana, from 11 November 2024 to 1 April 2026. These are public markets, unrelated to the multiple kink example later in the paper. Drift writes an onchain record each time a market changes, including its total deposits, total borrows and the rate curve in force, which gives utilization and $\alpha_{\mathrm{safe}}$ for every hour. As a check that we read the curves correctly, the borrow rate they imply matches the interest Drift actually charged to within about $1\%$ on both markets, including through a change in the shape of the curve in mid 2025.
+
+Measuring a supplier's share needs individual balances, and Drift records these only from 1 December 2025, as the balance an account holds after each deposit or withdrawal. Between two such records we grow the balance by the interest the market paid. This gives the balance of every account that deposited or withdrew during the four months to 1 April 2026, and dividing by the market's total deposits gives its share. Accounts with one owner count as one supplier, and so does a vault, since one manager decides its deposits. A \emph{lender} is a supplier that did not trade perpetual futures in the window. Table~\ref{tab:drift} gives the results.
+
+\begin{table}[htbp]
+\centering
+\caption{Exposure on two Drift spot markets. Shares of hours, with every hour weighted equally. A lender is a supplier with no perpetual futures settlement in the window. Lender rows are lower bounds, and the rows for all suppliers are approximate.}
+\label{tab:drift}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+ & SOL & USDC \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{11 November 2024 to 1 April 2026}} \\
+Above the kink & $5.4\%$ & $36.6\%$ \\
+$\alpha_{\mathrm{safe}}$ below $5\%$ & $0.3\%$ & $3.0\%$ \\
+Median $\alpha_{\mathrm{safe}}$ above the kink & $9.9\%$ & $8.4\%$ \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{1 December 2025 to 1 April 2026}} \\
+Above the kink & $12.4\%$ & $26.0\%$ \\
+A lender exposed, at least & $11.4\%$ & $7.9\%$ \\
+Any supplier exposed, approximately & $11.4\%$ & $11.6\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In at least one hour in nine on SOL and one in thirteen on USDC, a lender held more of the pool than the curve protected, so depositing more would have lowered that lender's income. On SOL one lender was exposed for $219$ hours and held up to $20\%$ of supply during them, and on USDC one was exposed for $230$ hours while holding up to $11.5\%$. Figure~\ref{fig:drift} shows the largest lender's share against the protected share. Drift's curve rarely protected less than $5\%$ of the pool and never less than $2\%$. The exposure came from lenders holding $10$ to $20\%$ of supply while the protected share above the kink sat near $8$ to $10\%$. Whom a curve protects matters more than how steep it is.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{08-drift-evidence.pdf}
+\caption{Hourly utilization, protected share $\alpha_{\mathrm{safe}}$ and the largest lender's share of supply on Drift from 1 December 2025, for (a) SOL and (b) USDC. A lender is exposed wherever its share lies above the protected share, and those hours are shaded.}
+\label{fig:drift}
+\end{figure}
+
+Three points govern how far these counts can be trusted. First, accounts that did not deposit or withdraw during the window leave no record, so the rebuilt suppliers cover $57\%$ of SOL deposits and $62\%$ of USDC deposits at the median hour. Adding the missing accounts back could only reveal more exposed suppliers, never remove one, and combining accounts by owner can only raise a share, so the counts understate exposure. Second, the rebuilt balances are accurate. For exposed lenders, the balance we carry forward matches the next recorded balance to within $1\%$ in $99.7\%$ of cases on SOL and in every case on USDC. Third, suppliers that also trade perpetual futures are harder to track, because trading gains and losses change their balances without a deposit record. Across all exposed suppliers, traders included, the match rate falls to $99.5\%$ on SOL and $95\%$ on USDC. The lender counts are therefore lower bounds, and the counts that include traders are approximate.
+
+The counts say nothing about what these suppliers actually did. Depositing more would have lowered their income, but whether any of them held back for that reason is a separate question. Suppliers that also trade perpetual futures hold deposits partly as collateral and may not size them by interest, which is why the lender rows lead. The analysis code and a pseudonymized snapshot of the data, with accounts numbered instead of named, are in the repository.
 
 \section{The Admissible Family}
 \label{sec:family}
@@ -481,11 +525,11 @@ The check applies to the curve actually implemented. As Appendix~\ref{app:implem
 
 \section{Conclusion}
 
-The condition $\alpha(1+\eta)\leq1$ decides whether a deposit can lower a supplier's own income. When it fails, the supplier gains by withdrawing, at the moment the pool needs supply. A protocol turns the condition into a rule on curves by choosing whom to protect. Protecting a fixed share gives the power law boundary and the endpoint bound $K^*$, and protecting every fresh depositor gives the hyperbolic boundary and the adjacent rate rule of Equation~\ref{eq:adjacent-rate-rule}. Neither guarantee contains the other.
+The condition $\alpha(1+\eta)\leq1$ decides whether a deposit can lower a supplier's own income. When it fails, the supplier gains by withdrawing, at the moment the pool needs supply, and on two Drift markets real lenders were in that position in roughly one hour in ten. A protocol turns the condition into a rule on curves by choosing whom to protect. Protecting a fixed share gives the power law boundary and the endpoint bound $K^*$, and protecting every fresh depositor gives the hyperbolic boundary and the adjacent rate rule of Equation~\ref{eq:adjacent-rate-rule}. Neither guarantee contains the other.
 
 The guarantee does not set the price level, so a protocol adopting it should state its fixed endpoints, allowed kink changes and protection target together.
 
-Several questions remain open: how borrowers respond to repricing, the welfare effects of the different repairs, monotonicity at the transaction level after token rounding, smooth curve families beyond the one built in Appendix~\ref{sec:smooth}, and how often suppliers withhold capital on live markets.
+Several questions remain open: how borrowers respond to repricing, the welfare effects of the different repairs, monotonicity at the transaction level after token rounding, smooth curve families beyond the one built in Appendix~\ref{sec:smooth}, and whether exposed suppliers on live markets act on their exposure.
 
 \begin{thebibliography}{9}
 
@@ -495,15 +539,15 @@ Aave.
 \newblock January 2020.
 \newblock \url{https://github.com/aave/aave-protocol/blob/master/docs/Aave_Protocol_Whitepaper_v1_0.pdf}
 
-\bibitem{agilerate}
-M.~Bastankhah, V.~Nadkarni, X.~Wang and P.~Viswanath.
-\newblock AgileRate: Bringing adaptivity and robustness to DeFi lending markets.
-\newblock arXiv:2410.13105, 2024.
-
 \bibitem{bartoletti}
 M.~Bartoletti, J.~H.-y. Chiang and A.~Lluch-Lafuente.
 \newblock SoK: Lending pools in decentralized finance.
 \newblock arXiv:2012.13230, 2020.
+
+\bibitem{agilerate}
+M.~Bastankhah, V.~Nadkarni, X.~Wang and P.~Viswanath.
+\newblock AgileRate: Bringing adaptivity and robustness to DeFi lending markets.
+\newblock arXiv:2410.13105, 2024.
 
 \bibitem{baude-optimal}
 B.~Baude, D.~Challet and I.~Muni Toke.
@@ -519,6 +563,11 @@ B.~Baude, V.~Danos and H.~El Khalloufi.
 A.~Cournot.
 \newblock \emph{Recherches sur les principes math\'ematiques de la th\'eorie des richesses}.
 \newblock Hachette, Paris, 1838.
+
+\bibitem{drift}
+Drift Labs.
+\newblock Drift protocol v2 program and documentation.
+\newblock \url{https://github.com/drift-labs/protocol-v2}.
 
 \bibitem{gudgeon}
 L.~Gudgeon, S.~Werner, D.~Perez and W.~J. Knottenbelt.
@@ -588,7 +637,7 @@ Figure~\ref{fig:fresh-income} shows the guarantee along one deposit path. A fres
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{T05-fresh-income.pdf}
-\caption{(a) Annualized income and (b) marginal income along the fresh depositor path. The standard kink has zero base rate. Table~\ref{tab:cavey-example} and the clamped fresh boundary have $5\%$ base rates. The table reaches $110\%$ maximum APR, while the other two reach $100\%$.}
+\caption{(a) Annualized income and (b) marginal income along the fresh depositor path. The standard kink has zero base rate. The example curve of Table~\ref{tab:cavey-example} and the clamped fresh boundary have $5\%$ base rates. The example curve reaches $110\%$ maximum APR, while the other two reach $100\%$.}
 \label{fig:fresh-income}
 \end{figure}
 
@@ -787,7 +836,7 @@ Integer evaluation adds small steps where no derivative exists. In the multiple 
 
 A protocol may also want the advertised protected share to vary continuously with utilization. This requires a continuous elasticity profile and imposes an additional cost beyond the deposit monotonicity constraint.
 
-The minimal change construction is continuous in the rate but not in its derivative: below the kink the slope is $R_o/O$ while the power branch leaves at $KR_o/O$, so unless $K=1$ the two disagree, and the same mismatch occurs in reverse at $U_c$. That matters, because the protected share $\alpha_{\mathrm{safe}}=1/(1+\eta)$ is computed from elasticity and inherits every discontinuity of it. Under the minimal change curve $\alpha_{\mathrm{safe}}$ falls from $\tfrac12$ to $1/(1+K)$ at a single point, so a supplier holding $30\%$ of the pool is protected at $U=O-\varepsilon$ and unprotected at $U=O+\varepsilon$, and the guarantee the protocol advertises jumps while the state variable it depends on moves continuously. Figure~\ref{fig:protected-share} shows the jump next to the smooth branch built below.
+The minimal change construction is continuous in the rate but not in its derivative: below the kink the slope is $R_o/O$ while the power branch leaves at $KR_o/O$, so unless $K=1$ the two disagree, and the same mismatch occurs in reverse at $U_c$. This affects the guarantee a protocol can advertise, because the protected share $\alpha_{\mathrm{safe}}=1/(1+\eta)$ is computed from elasticity and inherits every discontinuity of it. Under the minimal change curve $\alpha_{\mathrm{safe}}$ falls from $\tfrac12$ to $1/(1+K)$ at a single point, so a supplier holding $30\%$ of the pool is protected at $U=O-\varepsilon$ and unprotected at $U=O+\varepsilon$, and the guarantee the protocol advertises jumps while the state variable it depends on moves continuously. Figure~\ref{fig:protected-share} shows the jump next to the smooth branch built below.
 
 \begin{figure}[htbp]
 \centering
@@ -820,7 +869,7 @@ In $x=\ln(U/O)$ with $L=\ln(1/O)$, Equation~\ref{eq:endpoint} reads $\int_0^L\et
 
 Theorem~\ref{thm:kstar} makes $K^*$ the minimum worst case elasticity and Theorem~\ref{thm:strict} makes it a minimum that is approached without being reached, since the curve attaining it is the pure power law, which is exactly the one that gives up $C^1$ at the kink.
 
-The design choice is therefore a plain one. The power repair is the greatest admissible curve below the single kink baseline and is $C^0$, with a protected share that drops at the kink. A continuous elasticity profile gives $C^1$ and a protected share that slides, but only by spending elasticity headroom above $K^*$: for the illustrative inputs, a ceiling of $K=19$ buys a transition spread from $80\%$ to $91.9\%$ utilization. Both leave $O$, $R_o$ and $R_{\max}$ where they were.
+The power repair is the greatest admissible curve below the single kink baseline and is $C^0$, with a protected share that drops at the kink. A continuous elasticity profile gives $C^1$ and a protected share that slides, but only by spending elasticity headroom above $K^*$: for the illustrative inputs, a ceiling of $K=19$ buys a transition spread from $80\%$ to $91.9\%$ utilization. Both leave $O$, $R_o$ and $R_{\max}$ where they were.
 
 \subsection{An Explicit \texorpdfstring{$C^1$}{C1} Branch}
 \label{app:smoothstep}
