@@ -29,7 +29,7 @@ Pooled lending protocols commonly determine interest rates as a function of util
 
 Consequently, a supplier may be better off withholding capital, or withdrawing it. On a lending market at high utilization, which is when the pool most needs supply, one of us found that depositing only part of the available wallet balance earned more than depositing all of it.
 
-Existing work compares the rate rules of deployed protocols~\cite{gudgeon}, models lending pools formally~\cite{bartoletti}, and designs rates for expected lender wealth~\cite{baude-optimal} or stable utilization~\cite{agilerate}, always treating lenders as a group or the pool as a whole. Closest to the question here, Baude et al.~\cite{baude-leverage} account for the effect of a borrower's own position size on its borrowing cost. We study the corresponding question for a single supplier.
+Existing work compares the rate rules of deployed protocols~\cite{gudgeon}, models lending pools formally~\cite{bartoletti}, and designs rates for expected lender wealth~\cite{baude-optimal} or stable utilization~\cite{agilerate}. Baude et al.\ model how a borrower's own position moves its cost~\cite{baude-leverage} and how a lender's own supply moves its rates across several markets~\cite{baude-allocation}. We ask when one market's curve makes depositing more lower a supplier's own income, and which curves rule this out.
 
 This paper gives an exact condition under which a deposit cannot lower the supplier's own income, describes the rate curves that satisfy it, and separates what such a guarantee promises from what it costs. Section~\ref{sec:failure} works the failure through in numbers. Sections~\ref{sec:model} and \ref{sec:condition} derive the income condition, Section~\ref{sec:evidence} shows that real suppliers on two Drift markets were exposed to it, and Section~\ref{sec:family} describes the admissible family of rate curves it induces. Sections~\ref{sec:fixed} and \ref{sec:fresh} develop two protection guarantees, and Section~\ref{sec:minimal} gives a power law repair. Section~\ref{sec:multi} takes a market with several kinks and separates protection from pricing, and Section~\ref{sec:onchain} states the check a protocol would implement. The appendices hold the detailed constructions, further examples and the smooth extension.
 
@@ -525,9 +525,7 @@ The check applies to the curve actually implemented. As Appendix~\ref{app:implem
 
 \section{Conclusion}
 
-The condition $\alpha(1+\eta)\leq1$ decides whether a deposit can lower a supplier's own income. When it fails, the supplier gains by withdrawing, at the moment the pool needs supply, and on two Drift markets real lenders were in that position in roughly one hour in ten. A protocol turns the condition into a rule on curves by choosing whom to protect. Protecting a fixed share gives the power law boundary and the endpoint bound $K^*$, and protecting every fresh depositor gives the hyperbolic boundary and the adjacent rate rule of Equation~\ref{eq:adjacent-rate-rule}. Neither guarantee contains the other.
-
-The guarantee does not set the price level, so a protocol adopting it should state its fixed endpoints, allowed kink changes and protection target together.
+The condition $\alpha(1+\eta)\leq1$ decides whether a deposit can lower a supplier's own income. When it fails, the supplier gains by withdrawing, at the moment the pool needs supply, and on two Drift markets real lenders were in that position in roughly one hour in ten. A protocol turns the condition into a rule on curves by choosing whom to protect. Protecting a fixed share gives the power law boundary and the endpoint bound $K^*$, and protecting every fresh depositor gives the hyperbolic boundary and the adjacent rate rule of Equation~\ref{eq:adjacent-rate-rule}. Neither guarantee contains the other. The guarantee does not set the price level, so a protocol adopting it should state its fixed endpoints, allowed kink changes and protection target together.
 
 Several questions remain open: how borrowers respond to repricing, the welfare effects of the different repairs, monotonicity at the transaction level after token rounding, smooth curve families beyond the one built in Appendix~\ref{sec:smooth}, and whether exposed suppliers on live markets act on their exposure.
 
@@ -537,7 +535,7 @@ Several questions remain open: how borrowers respond to repricing, the welfare e
 Aave.
 \newblock Aave protocol whitepaper, version 1.0.
 \newblock January 2020.
-\newblock \url{https://github.com/aave/aave-protocol/blob/master/docs/Aave_Protocol_Whitepaper_v1_0.pdf}
+\newblock \url{https://github.com/aave/aave-protocol}
 
 \bibitem{bartoletti}
 M.~Bartoletti, J.~H.-y. Chiang and A.~Lluch-Lafuente.
@@ -559,6 +557,11 @@ B.~Baude, V.~Danos and H.~El Khalloufi.
 \newblock Leveraged positions on decentralized lending platforms.
 \newblock arXiv:2601.14005, 2026.
 
+\bibitem{baude-allocation}
+B.~Baude, V.~Danos and H.~El Khalloufi.
+\newblock Capital allocation on decentralized lending platforms.
+\newblock arXiv:2608.24206, 2026.
+
 \bibitem{cournot}
 A.~Cournot.
 \newblock \emph{Recherches sur les principes math\'ematiques de la th\'eorie des richesses}.
@@ -566,7 +569,7 @@ A.~Cournot.
 
 \bibitem{drift}
 Drift Labs.
-\newblock Drift protocol v2 program and documentation.
+\newblock Drift protocol v2.
 \newblock \url{https://github.com/drift-labs/protocol-v2}.
 
 \bibitem{gudgeon}

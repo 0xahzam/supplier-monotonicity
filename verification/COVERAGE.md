@@ -41,28 +41,28 @@ Reference: `../build/main.tex`. **Proved** means a Lean theorem states the claim
 | D035 | 486 | proved | accumulated_interest_difference and supplier_transfer; integrability explicit. |
 | D036 | 511 | definition | Affine rate and elasticity substitution; endpoint theorem below. |
 | D037 | 517 | proved | integer_endpoint_iff; fixed_linear_endpoint_suffices; continuous arithmetic, not rounded transactions. |
-| D038 | 647 | proved | fresh_boundary_income_algebra together with Core derivative and fresh share. |
-| D039 | 675 | proved | adjacent_fresh_ratio_iff. |
-| D040 | 679 | proved | fixed_left_cap_iff, fixed_right_cap_iff, fixed_right_unbounded, fixed_left_zero, combined_envelope. |
-| D041 | 690 | supported | floor_recursion_minimal; unbounded-cap limit handled numerically, not encoded in recursion theorem. |
-| D042 | 698 | supported | lower_recursion_maximal; complete constructed-curve feasibility not yet assembled. |
-| D043 | 725 | scope qualification | Normalized derivative equivalence, smooth antitonicity, running-infimum antitonicity and order bounds proved. The paper now assumes positive base rate; zero_base_flat_minorant explains why an unrestricted assertion is false. Continuity/regularity still pending. |
-| D044 | 749 | supported | Power and hyperbolic branches checked separately; combined join, regularity and general K>0 domain not assembled. |
-| D045 | 768 | supported | normalized_base_bound plus exact numerical check for K=19; general combined construction attainment pending. |
-| D046 | 849 | supported | reconstructedRate_* proves positive C1 construction for continuous log-coordinate elasticity; reconstructed_utilization_elasticity gives eta. General local-profile extension, change of variables and full converse pending. |
-| D047 | 861 | proved | continuous_rate_supremum_strict: positive continuous rate, interior differentiability, continuous derivative/rate quotient, and endpoint budget; explicit C1-data convention in Smoothing.lean. |
-| D048 | 880 | definition | smoothEta; continuity and exact integral formally proved for w>0. |
-| D049 | 896 | proved | smoothing_endpoint_unique for w>0; smooth_zero_width for the declared limiting value. |
-| D050 | 903 | proved | smooth_plateau_derivative and smooth_plateau_derivative_positive. |
-| D051 | 907 | proved | smoothing_ceiling_width_iff: full pointwise ceiling for w>0 and eta0<Kstar; w=0 is the separately declared limiting value. |
-| D052 | 915 | proved | smoothEta_integral and smooth_area_identity. Corrected smoothing identity. |
-| D053 | 922 | supported | smooth_ramp_primitive_derivative, smooth_primitive_join and reconstructedRate_*; C2 join assembly pending. |
+| D038 | 650 | proved | fresh_boundary_income_algebra together with Core derivative and fresh share. |
+| D039 | 678 | proved | adjacent_fresh_ratio_iff. |
+| D040 | 682 | proved | fixed_left_cap_iff, fixed_right_cap_iff, fixed_right_unbounded, fixed_left_zero, combined_envelope. |
+| D041 | 693 | supported | floor_recursion_minimal; unbounded-cap limit handled numerically, not encoded in recursion theorem. |
+| D042 | 701 | supported | lower_recursion_maximal; complete constructed-curve feasibility not yet assembled. |
+| D043 | 728 | scope qualification | Normalized derivative equivalence, smooth antitonicity, running-infimum antitonicity and order bounds proved. The paper now assumes positive base rate; zero_base_flat_minorant explains why an unrestricted assertion is false. Continuity/regularity still pending. |
+| D044 | 752 | supported | Power and hyperbolic branches checked separately; combined join, regularity and general K>0 domain not assembled. |
+| D045 | 771 | supported | normalized_base_bound plus exact numerical check for K=19; general combined construction attainment pending. |
+| D046 | 852 | supported | reconstructedRate_* proves positive C1 construction for continuous log-coordinate elasticity; reconstructed_utilization_elasticity gives eta. General local-profile extension, change of variables and full converse pending. |
+| D047 | 864 | proved | continuous_rate_supremum_strict: positive continuous rate, interior differentiability, continuous derivative/rate quotient, and endpoint budget; explicit C1-data convention in Smoothing.lean. |
+| D048 | 883 | definition | smoothEta; continuity and exact integral formally proved for w>0. |
+| D049 | 899 | proved | smoothing_endpoint_unique for w>0; smooth_zero_width for the declared limiting value. |
+| D050 | 906 | proved | smooth_plateau_derivative and smooth_plateau_derivative_positive. |
+| D051 | 910 | proved | smoothing_ceiling_width_iff: full pointwise ceiling for w>0 and eta0<Kstar; w=0 is the separately declared limiting value. |
+| D052 | 918 | proved | smoothEta_integral and smooth_area_identity. Corrected smoothing identity. |
+| D053 | 925 | supported | smooth_ramp_primitive_derivative, smooth_primitive_join and reconstructedRate_*; C2 join assembly pending. |
 | T001 | 124 | proved | Core derivative theorem at smooth states. |
 | T002 | 246 | open | Full a.e. / locally absolutely continuous equivalence pending; no replacement by smooth result. |
 | T003 | 293 | supported | Smooth endpoint bound and power attainment proved; AC essential-supremum theorem pending. |
 | T004 | 334 | supported | Worst start, pointwise envelope, boundary derivative and finite-deposit lemmas proved; full theorem assembly and boundary uniqueness pending. |
-| T005 | 858 | supported | Strict supremum statement proved directly in U using explicit C1 data; positive C1 reconstruction and width existence proved. Full assembled feasibility including all interval/join assumptions pending. |
-| T006 | 893 | proved | Exact integral, plateau uniqueness, derivative, strictness and pointwise ceiling-width equivalence for nonzero width; zero width handled as the stated nonsmooth limit. |
+| T005 | 861 | supported | Strict supremum statement proved directly in U using explicit C1 data; positive C1 reconstruction and width existence proved. Full assembled feasibility including all interval/join assumptions pending. |
+| T006 | 896 | proved | Exact integral, plateau uniqueness, derivative, strictness and pointwise ceiling-width equivalence for nonzero width; zero width handled as the stated nonsmooth limit. |
 
 Inline fragments, captions, tables and source blocks are hashed and counted but have no individual status.
 
